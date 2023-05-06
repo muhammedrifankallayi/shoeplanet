@@ -1,0 +1,166 @@
+<%-include('../layout/admin-header.ejs')%>
+
+<div class="container-fluid pt-4 px-4 ">
+  <div class="row g-4">
+      <div class="col-sm-12 col-xl-6 ">
+          <div class="bg-secondary rounded h-100 p-4">
+              <h6 class="mb-4">Basic Form</h6>
+              <form method="post" enctype="multipart/form-data" >
+                  <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Product Name</label>
+                      <input type="text" name="name" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp"  value="<%=info.name%>" >
+                      <div id="emailHelp" class="form-text">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Price</label>
+                        <input type="number" name="price" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" value="<%=info.price%>" >
+                        <div id="emailHelp" class="form-text">
+                        </div>
+                  </div>
+                  <div  id="image-pre" class="mb-3">
+                     
+                      <div id="image-preview-container"></div>
+                     
+                   <%   for(let i=0;i< info.image.length;i++){  %>
+                      <img id="image-preview"  src="/admin/img/<%=info.image[i]%>"  width="100px" height="100px" >
+                      <a onclick="sendRequest('<%=info._id%>','<%=i%>')" class="btn btn-sm mb-5"  href=""><i class="fa fa-times mb-5"></i></a>
+                     <input type="hidden" id="ids" value="<%=info._id%>"  >
+                      <%}%>
+                      <p>Curren images</p>
+                      <input type="file"   name="image" id="image-input" multiple accept="image/*" >
+                     
+                      
+                  </div>
+<div class="mb-3" >
+                  <label class="form-label" for="cars">Catagory:</label>
+
+                  <select  class="form-control bg-dark" name="catagory"  id="cars" >
+                    <option value="<%=info.catagory%>"><%=info.catagory%></option>
+                    <%for(let i=0;i<data.length;i++){%>
+
+                       <% if(data[i].catagory != info.catagory){%>
+                    <option value="<%=data[i].catagory%>"><%=data[i].catagory%></option>
+                    <%}%>
+                    <%}%>
+                  </select>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Description</label>
+                    <input type="text" name="description" placeholder="description" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp  "   value="<%=info.description%>" >
+                    <div id="emailHelp" class="form-text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">stock</label>
+                        <input type="number" name="stock" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" value="<%=info.price%>" >
+                        <div id="emailHelp" class="form-text">
+                        </div>
+                  </div>
+                  <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                  </div>
+                  <input type="hidden" name="id" value="<%=info._id%>" >
+                 <input  type="submit" class="btn btn-primary" value="ADD" >
+              </form>
+          </div>
+      </div>
+      
+
+
+     
+      <script>
+      
+      
+//  img showing all added
+
+const input = document.getElementById('image-input');
+const previewContainer = document.getElementById('image-preview-container');
+
+input.addEventListener('change', () => {
+  const files = input.files;
+
+  // clear previous previews
+  previewContainer.innerHTML = '';
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+    const preview = document.createElement('img');
+    const removeButton = document.createElement('a'); // create remove button element
+
+    // Set a unique ID for the preview image
+    preview.id = `preview-${i}`;
+
+    // set the classes and inner HTML of the remove button
+    removeButton.className = 'btn btn-sm mb-5';
+    removeButton.innerHTML = '<i class="fa fa-times mb-5"></i>';
+
+    reader.addEventListener('load', () => {
+      preview.src = reader.result;
+    });
+
+    if (file) {
+      reader.readAsDataURL(file);
+      
+    }
+
+    // add event listener to remove button
+    removeButton.addEventListener('click', () => {
+      const previewId = preview.id; // get the ID of the preview image
+      const previewElement = document.getElementById(previewId); // get the preview image element
+      previewContainer.removeChild(previewElement);
+      previewContainer.removeChild(removeButton);
+c;
+      // remove corresponding file from input
+     
+    });
+
+    previewContainer.appendChild(preview);
+    // append remove button after preview image
+  }
+});
+
+
+
+
+        
+
+
+
+        //delete each image.............
+        function sendRequest(id,num){
+   
+   $.ajax({
+      url:'/admin/dlt-img',
+      method:'post',
+      data:{
+  id:id,
+  num:num
+      },
+      success:(response)=>{
+            location.reload()
+         }
+
+   })
+}
+				
+	
+		
+
+
+        </script> -
+ <style>
+#image-pre img{
+  width: 100px;
+  height: 100px;
+}
+
+
+ </style>
+
+
+  <%-include('../layout/admin-footer.ejs')%> 

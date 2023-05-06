@@ -1,0 +1,73 @@
+<%-include('../layout/admin-header.ejs')%>
+<div class="col-12">
+    <div class="bg-secondary rounded h-100 p-4 m-3">
+       
+        <h6 class="mb-4">Catagory Management</h6>
+        <div class="table-responsive">
+         
+            <table class="table">
+                <a class="btn btn-success" href="/admin/addcoupen">ADD COUPEN</a>
+                <thead>
+                   
+                      
+                   
+                  
+                    <tr>
+                        <th scope="col">no</th>
+                        <th scope="col">coupon code</th>
+                        <th scope="col">Exp-Date</th>
+                        <th scope="col">Discount</th>
+                        
+                        <th scope="col">purchaseAmount</th>
+                        <th scope="col">Limit</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" >Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let i=0; i<data.length; i++){ %>
+                    <tr>
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=data[i].couponcode%></td>
+                        <td><%=data[i].expiredate.toISOString().substring(0,10)%></td>
+                        <td><%=data[i].discount%></td>
+                        <td><%=data[i].purchaceamount%></td>
+                            <td><%=data[i].limit%></td>
+                            <% if(data[i].status==true){ %>
+                            <td><a onclick="DELETE('<%=data[i]._id%>','false')" href="">true</a></td>
+                            <%}else{%>
+                                <td><a onclick="DELETE('<%=data[i]._id%>','true')" href="">false</a></td>
+                                <%}%> 
+                            <td><a class="btn btn-warning" href="/admin/coupenedit?id=<%=data[i]._id%>">EDIT</a><a class="btn btn-danger" onclick="DELETE('<%=data[i]._id%>','delete')" href="">DELETE</a></td>
+                       
+                    
+                    </tr>
+                    <%}%>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>document.getElementById('link9').classList.add("active") </script>
+
+<script>
+    function DELETE(id,method){
+        $.ajax({
+            url:'/admin/deletecoupen',
+            method:'post',
+            data:{
+               id,
+               method
+            },
+            success:(response)=>{
+                location.reload()
+            }
+            
+
+        })
+    }
+</script>
+
+<%-include('../layout/admin-footer.ejs')%>

@@ -1,0 +1,58 @@
+<%-include('../layout/admin-header.ejs')%>
+
+<div class="col-12 " >
+    
+    <div class="bg-secondary rounded h-100 p-4 m-3">
+        <a href="/admin/addproduct" class="btn btn-success " id="addproduct"  >ADD-NEW-Product</a>
+        <h6 class="mb-4">Product detailes</h6>
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">no</th>
+                        <th scope="col">name</th>
+                        <th scope="col">category</th>
+                        <th scope="col">price</th>
+                        <th scope="col">image</th>
+                        <th scope="col">edit</th>
+                        <th scope="col">detele</th>
+                        <th scope="col" >Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    <% for(let i=0; i<products.length; i++){ %>
+                    <tr>
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=products[i].name%></td>
+                        <td><%= products[i].catagory %></td>
+                        <td>$<%= products[i].price %></td>
+                       
+                      <td>   <img class=""  src="img/<%=products[i].image[0]%>" alt="" style="width: 40px; height: 40px;"></td>
+                     
+                        <td><a href="/admin/editproduct?id=<%=products[i]._id%>" class="btn btn-warning" >Edit</a></td>
+                        <td><a href="/admin/deleteproduct?id=<%=products[i]._id%>" class="btn btn-danger" >Delete </a></td>
+                        <td><%=products[i].stock%></td>
+                       
+                        
+                    
+                    </tr>
+                    <%}%>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style> 
+    #addproduct{
+        float: right;
+    }
+    </style>
+
+<script> document.getElementById("link5").classList.add("active") </script>
+        
+<%-include('../layout/admin-footer.ejs')%>
+
+    

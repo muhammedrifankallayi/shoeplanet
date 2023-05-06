@@ -1,0 +1,277 @@
+<%-include('../layout/admin-header.ejs')%>
+
+
+      
+
+
+            <!-- Table Start -->
+
+            <div class="col-12">
+                <div class="bg-secondary rounded h-100 p-4 m-3">
+                    <h6 class="mb-4">USER DATA MANAGEMENT</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">no</th>
+                                    <th scope="col">Join Date</th>
+                                    <th scope="col"> Name</th>
+                                    <th scope="col">mobile</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">verified</th>
+                                    
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% for(let i=0; i<data.length; i++){ %>
+                                <tr>
+                                    <th scope="row"><%=i+1%></th>
+                                    <td><%=data[i].Date%></td>
+                                    <td><%=data[i].username%></td>
+                                    <td><%=data[i].mobile%></td>
+                                    <td><%=data[i].email%></td>
+                                    <td><%=data[i].is_verified%></td>
+                                    <% if(data[i].is_verified==1){%>
+                                    <td  > <a style="height: 37px; width: 90px;" href="/admin/block?id=<%=data[i]._id %>" class="btn btn-danger"  onclick="confirm('are you sure for  Block the user')" > Block </a></td>
+                                    <%  }else{%>
+                                    <td> <a style="height: 37px; width: 90px;" href="/admin/block?id=<%=data[i]._id %>&data=true" class="btn btn-success" onclick="confirm('are you sure for  unblock the user')" >Unblock</a></td>
+                                    <%}%>
+                                
+                                </tr>
+                                <%}%>
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <script>document.getElementById('link6').classList.add("active") </script>
+
+
+            <!-- <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Basic Table</h6>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <% for(let i=0; i<data.length; i++){ %>
+                                    <tr>
+                                       
+                                        <th scope="row"><%=i+1%></th>
+                                        <td><%=data[i].username%></td>
+                                        <td><%=data[i].mobile%></td>
+                                        <td><%=data[i].email%></td>
+                                        
+                                    </tr>
+                                    <%}%>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Accented Table</h6>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>jhon@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Hoverable Table</h6>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>jhon@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Color Table</h6>
+                            <table class="table table-dark">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>jhon@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Bordered Table</h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>jhon@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Table Without Border</h6>
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>jhon@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>mark@email.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>jacob@email.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div> -->
+            <!-- Table End -->
+
+
+            <%-include('../layout/admin-footer.ejs')%> 

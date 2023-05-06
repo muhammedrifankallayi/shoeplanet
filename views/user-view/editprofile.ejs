@@ -1,0 +1,125 @@
+<%- include('../layout/header.ejs')%>
+<div style="font-weight: bolder;"  class="container-fluid pt-4 px-4  ">
+    <div   class="row g-4">
+        <div style="margin: auto;" class="col-sm-12 col-xl-6 ">
+            <div style="background-color: rgb(111, 190, 208);" class=" offset-sm-2 text-center rounded h-100 p-4">
+                <% if(data.image){ %>
+                    <img src="admin/img2/<%=data.image%>" alt="avatar"
+                    id="imgView" class="rounded-circle img-fluid" style="width: 150px;">
+                <% }else{ %>
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              id="imgView" class="rounded-circle img-fluid" style="width: 150px;">
+                <%}%>
+                <form  method="post" enctype="multipart/form-data" >
+                    <div class=" d-flex justify-content-center">
+                      
+                      
+                </div>
+                    <div class=" d-flex justify-content-center">
+                        <input type="file"  onchange="viewimg(event)" name="image" id="file" class="inputfiles" data-multiple-caption="{count} files selected" />
+                        <label class="btn btn-danger" for="file" ><strong  >change</strong></label>
+                       
+                    </div>
+                  
+                    <div class="mb-3">
+                      
+                        <input type="text" name="name" class="form-control "   placeholder="Name" id="exampleInputEmail1 "  value="<%=data.username%>" required>
+                        <p>name</p>
+                        <div id="emailHelp" class="form-text">
+                        </div>
+                       
+                    </div>
+                    <div class="mb-3">
+                        
+                        <input type="email" name="email" class="form-control  "  placeholder="Email" id="exampleInputEmail1 " value="<%=data.email%>" required>
+                        <p>email</p>
+                        <div id="emailHelp" class="form-text">
+                        </div>
+                        <input type="hidden" name="id" value="" >
+                    </div>
+                     <div class="mb-3">
+                        
+                        <input type="number" name="mobile" class="form-control  "  placeholder="Mobile" id="exampleInputEmail1 " value="<%=data.mobile%>" required>
+                        <p>mobile no:</p>
+                        <div id="emailHelp" class="form-text">
+                        </div>
+                        <input type="hidden" name="id" value="" >
+                    </div>
+                    
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                   <input  type="submit" class="btn btn-primary" value="UPDATE" >
+                </form>
+            </div>
+        </div>
+        <script>
+            function viewimg(event){
+    document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    
+}
+var inputs = document.querySelectorAll('.inputfiles');
+Array.prototype.forEach.call(inputs, function(input) {
+  var label = input.nextElementSibling,
+      labelVal = label.innerHTML;
+
+  input.addEventListener('change', function(e) {
+    var fileName = '';
+    if (this.files && this.files.length > 1)
+      fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+    else
+      fileName = e.target.value.split('\\').pop(); // corrected the syntax error here
+
+    if (fileName)
+      label.querySelector('span').innerHTML = fileName;
+    else
+      label.innerHTML = labelVal;
+  });
+});
+
+
+        </script>
+
+
+
+<style>
+    .inputfiles {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfiles + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(84, 77, 77);
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.inputfiles:focus + label,
+.inputfiles + label:hover {
+    background-color: red;
+}
+
+.inputfiles + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfiles:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfiles + label * {
+	pointer-events: none;
+}
+</style>
+
+        <%- include('../layout/footer.ejs')%>
+       

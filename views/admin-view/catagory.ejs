@@ -1,0 +1,47 @@
+<%-include('../layout/admin-header.ejs')%>
+
+
+<div class="col-12">
+    <div class="bg-secondary rounded h-100 p-4 m-3">
+        <h6 class="mb-4">Catagory Management</h6>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">no</th>
+                        <th scope="col">Id</th>
+                        <th scope="col"> Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <a href="/admin/addCatagory" class="btn btn-success " id="addcata"  >ADD-NEW-CATAGORY</a>
+                    <% for(let i=0; i<data.length; i++){ %>
+                    <tr>
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=i+4566%></td>
+                        <td><%=data[i].catagory%></td>
+                        <td><a href="/admin/editCatagory?id=<%=data[i]._id %>" class="btn btn-warning" >edit</a></td>
+                        <td><a href="/admin/deleteCatagory?id=<%=data[i]._id%>" class="btn btn-danger" >delet</a></td>  
+                            <% if(data[i].block==0){ %>                                        
+                                <td><a href="/admin/categoryblock?id=<%=data[i]._id%>" class="btn btn-dark" >unlist</a></td>
+                                <% }else{ %>
+                                    <td><a href="/admin/categoryblock?id=<%=data[i]._id%>" class="btn btn-info" >list</a></td>
+                                    <%}%>
+                    </tr>
+                    <%}%>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+      <style> 
+    #addcata{
+        float: right;
+    }
+    </style>
+
+<script>document.getElementById('link3').classList.add("active") </script>
+<%-include('../layout/admin-footer.ejs')%> 

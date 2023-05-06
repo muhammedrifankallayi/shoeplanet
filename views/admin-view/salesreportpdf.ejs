@@ -1,0 +1,48 @@
+<div class="col-12">
+    <div class="bg-secondary rounded h-100 p-4 m-3">
+        <h6 class="mb-4">Catagory Management</h6>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><span >no</span>  </th>
+                        <th scope="col"><span >user</span>  </th>
+                        <th scope="col"><span>totalproducts</span> </th>
+                        <th scope="col"><span>Prize</span>  </th>
+                        
+                        <th scope="col"><span>Payment-Type</span></th>
+                        <th scope="col"><span>Date</span></th>
+                        <th  scope="col"><span>Status</span></th>
+                    </tr>
+                </thead>
+               
+               
+                <tbody>
+
+                    <% for(let i=0;i < report.length;i++){ %>
+                    <tr>
+                        
+                        <th scope="row"><%=i+1%></th>
+                        <td style="text-align: center  ;  " scope="col" ><span><%=report[i].user%></span> </td>
+                        <td style="text-align: center;" ><span> <%=report[i].products.length%> </span></td>
+                        <td style="text-align: center;" ><span> <%=report[i].totalAmount%> </span></td>
+                        
+                        <td style="text-align: center;" ><span> <%=report[i].paymentMethod %></span> </td>
+                     
+                            
+                      
+                        <td><a class="btn btn-muted" style="text-align: center;" ><span><%=report[i].date.toISOString().substring(0,10)%></span></a></td>
+                      
+                            <td><a class="btn btn-success" ><span><%=report[i].status%></span></a></td>
+                           
+                     
+                    
+                    </tr>
+                    <%}%>
+                </tbody>
+               
+            </table>
+          
+        </div>
+    </div>
+</div>

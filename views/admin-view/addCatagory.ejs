@@ -1,0 +1,25 @@
+<%-include('../layout/admin-header.ejs')%>
+
+<div class="container-fluid pt-4 px-4 ">
+  <div class="row g-4">
+      <div class="col-sm-12 col-xl-6 ">
+          <div class="bg-secondary rounded h-100 p-4">
+              <h6 class="mb-4">Basic Form</h6>
+              <form method="post">
+                  <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Catagory Name</label>
+                      <input type="text" name="catagory" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp">
+                      <div id="emailHelp" class="form-text">
+                      </div>
+                  </div>
+                 <p style="color: red;" ><%=msg%></p>
+                  <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                  </div>
+                 <input  type="submit" class="btn btn-primary" value="ADD" >
+              </form>
+          </div>
+      </div>
+  <%-include('../layout/admin-footer.ejs')%> 

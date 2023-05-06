@@ -1,0 +1,82 @@
+<%-include('../layout/admin-header.ejs')%>
+
+
+
+
+
+<div class="col-12">
+    <div class="bg-secondary rounded h-100 p-4 m-3">
+        <h6 class="mb-4">Catagory Management</h6>
+        <div class="table-responsive">
+            <table class="table">
+                <form action="/admin/salesfilter" method="post" >
+                    <input type="date" name="start"  > <input type="date" name="end" ><button>filter</button>
+                </form>
+                
+                <thead>
+
+                    <tr>
+                        <th scope="col">no</th>
+                        <th scope="col">user</th>
+                        <th scope="col">totalproducts</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Prize</th>
+                        
+                        <th scope="col">Payment-Type</th>
+                        <th scope="col">Date</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let i=0;i<order.length;i++){ %>
+                    <tr>
+                        
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=order[i].user%></td>
+                        <td><%=order[i].products.length%></td>
+                        <td>
+                            <% order[i].products.forEach(product => { %>
+                                
+                              <%= product.productId.name %> </p>
+                              <% }) %>
+                            </td> 
+                        <td><%=order[i].totalAmount%></td>
+                        
+                        <td><%=order[i].paymentMethod %></td>
+                      
+                        <td><a class="btn btn-danger" ><%=order[i].date.toISOString().substring(0,10)%></a></td>
+                       
+                       
+                            
+                            
+                     
+                    
+                    </tr>
+                    <%}%>
+                </tbody>
+               
+            </table>
+            <a href="/admin/download" class="btn btn-primary">Download</a>
+        </div>
+    </div>
+</div>
+
+
+
+<script>document.getElementById('link7').classList.add("active") </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%-include('../layout/admin-footer.ejs')%>

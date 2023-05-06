@@ -1,0 +1,115 @@
+<%-include('../layout/admin-header.ejs')%> 
+
+<div class="col-12">
+                <div class="bg-secondary rounded h-100 p-4 m-3">
+                    <h6 class="mb-4">Order Management</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">no</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">DeliveryAdress</th>
+                                    
+                                    <th scope="col">Payment</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">return.Req</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% for(let i=0; i<data.length; i++){ %>
+                                <tr>
+                                    <th scope="row"><%=i+1%></th>
+                                    <td><%=data[i].user%></td>
+                                    <td><%=data[i].date.toISOString().substring(0,10)%></td>
+                                    <td><%=data[i].deliveryDetails%></td>
+                                    <td><%=data[i].paymentMethod %></td>
+                                   <td> <select onchange="status('<%=data[i]._id %>','status<%=i%>')"   name="status<%=i%>" id="status<%=i%>" class="form-control">
+                                    <option selected disabled hidden value="">Status:<%=data[i].status %></option>
+                                      <option class="btn btn-danger" value="Cancelled">Cancel</option>
+                                      <option class="btn btn-light" value="Placed">Placed</option>
+                                      <option class="btn btn-success" value="Shipped">Shipped</option>
+                                      <option class="btn btn-info" value="Delivered">Delivered</option>
+                                      <option class="btn btn-warning" value="Pending">Pending</option>
+                                  </select></td>
+                              <% if(data[i].status == 'Return' ){ %>
+                                   <td><a  onclick="statusreject('<%=data[i]._id %>','Return Rejected')" href="" class="btn btn-danger" >REJECT</a> <a  onclick="statusreject('<%=data[i]._id %>','Return Approved')" href="" class="btn btn-success" >APPROVE</a></td>
+                                   <%}else if(data[i].status == 'Return Rejected' ) {%>
+                                    <td>Rejected</td>
+                                    <%}else if(data[i].status == 'Return Approved' ) {%>
+                                        <td>Approved</td>
+                                        <%}else{%>
+                                  <td> Not yet</td>
+                                            <%}%>
+                                </tr>
+                                <%}%>
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <script>document.getElementById('link4').classList.add("active") </script>
+
+            
+
+
+
+            <!-- Footer Start -->
+
+            <script>
+               
+function status(orderId,Id){
+   
+   var status = document.getElementById(Id).value
+    document.getElementById('llo').innerText=status
+   
+
+    $.ajax({
+        
+            url:'/admin/orderstatus',
+            method:'post',
+            data:{
+				data:status,
+                id:orderId
+            },
+            success:(response)=>{
+                if(response.success){
+                  location.reload()
+                }else{
+                    location.href='/admin/index'
+                }
+               
+               }
+   
+         })
+}
+
+function statusreject(orderId,status){
+   
+  
+   
+
+    $.ajax({
+        
+            url:'/admin/orderstatus',
+            method:'post',
+            data:{
+				data:status,
+                id:orderId
+            },
+            success:(response)=>{
+                if(response.success){
+                  location.reload()
+                }else{
+                    location.href='/admin/index'
+                }
+               
+               }
+   
+         })
+}
+            </script>
+            <%-include('../layout/admin-footer.ejs')%> 

@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<title>SHOE PLANET</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- favicon -->
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/1785/1785348.png">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+	
+
+	</head>
+	<body>
+		<div class="colorlib-loader"></div>
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index">Footwear</a></div>
+						</div>
+						
+						<div class="col-sm-5 col-md-3">
+						
+			            <form action="/search" method="post" class="search-wrap">
+							
+			               <div class="form-group">
+
+			                  <input type="search" name="search" class="form-control search" placeholder="Search">
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+			               <input type="hidden" id="cataHLT"  name="category"  value="<%=category%>" >
+							</div>
+			            </form>
+						<div><li class="float-right " ><a class="btn btn-info" href="/logout"><span>Logout</span></a></li><a class="btn btn-primary" href="/profile"><img  width="15px" height="13px" src="images/profile--icon.jpg" alt=""><strong>Profile</strong></a></div>
+			         </div>
+		         </div>
+<!-- ................. -->
+
+		
+		
+
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+								<li><a  href="index"><span id="link1" class="btn" >Home</span></a></li>
+								<li><a  href="women"><span  id="link2" class="btn" >Product</span></a></li>
+								<li class="has-dropdown">
+									<a  href="men"><span id="link22" class="btn" >More</span></a>
+									<ul class="dropdown">
+										
+										<li><a   href="cart">Shopping Cart</a></li>
+										<li><a href="checkout">Checkout</a></li>
+										<li><a href="order-complete">Order Complete</a></li>
+										<li><a href="add-to-wishlist">Wishlist</a></li>
+									</ul>
+								</li>
+								
+								<li><a  href="about"><span id="link3" class="btn" >About</span></a></li>
+								<li ><a  href="contact"><span  id="link4" class="btn" >Contact</span></a></li>
+								<li><a  href="myorders"><span id="link5" class="btn" >My orders</span></a></li>
+								<li class=""><a href="cart"><i class="icon-shopping-cart"><span id="link6" >Cart[]</span></i></a></li>
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="sale">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-8 offset-sm-2 text-center">
+							<div class="row">
+								<div class="owl-carousel2">
+									<div class="item">
+										<div class="col">
+											<h3><a href="#">25% off (Almost) Everything! Use Code: Summer Sale</a></h3>
+										</div>
+									</div>
+									<div class="item">
+										<div class="col">
+											<h3><a href="#">Our biggest sale yet 50% off all summer shoes</a></h3>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div class="breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<p class="bread"><span><a href="index">Home</a></span> / <span>Contact</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+
+
+
+		</script>
+
+<!-- ........... -->
+
+		<div style="padding-top: 0;" class="colorlib-product">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-xl-3">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Catageries</h3>
+									<ul>
+										<li><a href="/women">All</a></li>  
+										<%for (let i=0 ; i< categories.length ; i++ ) { %>               
+										<li><a  href="/showcategory?id=<%=categories[i].catagory%>"><span id="<%=categories[i].catagory%>" class="" ><%=categories[i].catagory%></span></a></li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+										<%}%>
+										<i class="bi bi-person"></i>
+										
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Brand</h3>
+									<ul>
+										<li><a href="#">Nike</a></li>
+										<li><a href="#">Adidas</a></li>
+										<li><a href="#">Merrel</a></li>
+										<li><a href="#">Gucci</a></li>
+										<li><a href="#">Skechers</a></li>
+									</ul>
+								</div>
+							</div>
+							<!-- sorting on price  -->
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Sort On price</h3>
+									<ul>
+										<li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+										  </svg></i><a href="/sortprice?id=1&search=<%=search%>&category=<%=category%>"><span id="1" >Low to High</span></a></li>
+										<li><a href="/sortprice?id=-1&search=<%=search%>&category=<%=category%>"><span id="-1" >High to Low</span></a><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+										  </svg></li>
+										
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Colors</h3>
+									<ul>
+										<li><a href="#">Black</a></li>
+										<li><a href="#">White</a></li>
+										<li><a href="#">Blue</a></li>
+										<li><a href="#">Red</a></li>
+										<li><a href="#">Green</a></li>
+										<li><a href="#">Grey</a></li>
+										<li><a href="#">Orange</a></li>
+										<li><a href="#">Cream</a></li>
+										<li><a href="#">Brown</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Material</h3>
+									<ul>
+										<li><a href="#">Leather</a></li>
+										<li><a href="#">Suede</a></li>
+									</ul>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="col-lg-9 col-xl-9">
+						<div class="row row-pb-md">
+							<% for(let i=0; i<data.length; i++){ %>
+								<% if(data[i].block==0){ %>
+							<div class="col-lg-4 mb-4 text-center">
+								
+								<div class="product-entry border">
+									<a href="/product-detail?id=<%=data[i]._id%>" class="prod-img">
+										<img width="300px" height="400px" src="admin/img/<%=data[i].image[0] %>" class="img-fluid" alt="Free html5 bootstrap 4 template">
+									</a>
+									<div class="desc">
+										<h2><a href="#"><%=data[i].name%></a></h2>
+										<span class="price">$<%=data[i].price%></span>
+										<button class="btn btn-success" onclick="ToCart('<%=data[i]._id%>')" >Add to Cart</button>
+									</div>
+								</div>
+								
+							</div>
+							<%}%>
+							<%}%>
+							
+						</div>
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<div class="block-27">
+				               <ul>
+					            <% for(let i =1 ; i<=size ;i++){ %>
+									<li  id="page-<%=i%>-link" ><a href="/pagination?page=<%=i%>&id=page-<%=i%>-link&search=<%=search%>&category=<%=category%>&sort=<%=sort%>"><span ><%=i%></span></a></li>
+				                 <input id="kai" type="hidden" value="<%=tagId%>" >
+								 <input type="hidden" id="sort" value="<%=sort%>" >
+								<%}%>
+				               </ul>
+				            </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="colorlib-featured">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(images/about.jpg);">
+								<h2 >Mens</h2>
+								<p><a href="#" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(images/women.jpg);">
+								<h2>Womens</h2>
+								<p><a href="#" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(images/item-11.jpg);">
+								<h2>Kids</h2>
+								<p><a href="#" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<style>.activ {color: blue;text-decoration:  underline;}</style>
+			<script>const myLink = document.getElementById("link2"); myLink.classList.add("activ")
+			const catagory = document.getElementById("cataHLT").value
+			document.getElementById(catagory).classList.add('activ')
+			const sort = document.getElementById("sort").value
+			document.getElementById(sort).classList.add('activ')
+			</script>
+
+		<script>
+		
+			
+			
+const val = document.getElementById('kai').value
+			document.getElementById(val).classList.add('active')
+		
+
+value.classList.add('active')
+function ToCart(id){
+  
+         $.ajax({
+            url:'/hometoCart',
+            method:'post', 
+            data:{
+				product_id:id
+            },
+            success:(response)=>{
+                   if(response.success){         
+					Swal.fire({
+  position: 'center',
+  icon: 'success',
+  title: 'Added to cart',
+  showConfirmButton: false,
+  timer: 1500
+})
+                   }
+               }
+   
+         })
+      }
+
+	 
+	
+  
+
+
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="sweetalert2.all.min.js"></script>
+		<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+
+		<%- include('../layout/footer.ejs')%>
+
