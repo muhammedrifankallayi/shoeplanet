@@ -1,26 +1,28 @@
 <%-include('../layout/admin-header.ejs')%>
 
 
+
+
+
 <div class="col-12">
     <div class="bg-secondary rounded h-100 p-4 m-3">
         <h6 class="mb-4">Catagory Management</h6>
         <div class="table-responsive">
             <table class="table">
-                <form action="/admin/salesfilter" method="post" >
-                    <input id="start-date" type="date" name="start"  > <input id="end-date" type="date" name="end" ><button>filter</button>
-                </form>
-                <p id="date-error" ></p>
+            
+                
                 <thead>
 
                     <tr>
                         <th scope="col">no</th>
                         <th scope="col">user</th>
-                        <th scope="col">totalproducts</th>
+                       
                         <th scope="col">Products</th>
                         <th scope="col">Prize</th>
                         
                         <th scope="col">Payment-Type</th>
                         <th scope="col">Date</th>
+                        <th scope="col" > View</th>
                        
                     </tr>
                 </thead>
@@ -31,7 +33,7 @@
                         
                         <th scope="row"><%=i+1%></th>
                         <td><%=order[i].user%></td>
-                        <td><%=order[i].products.length%></td>
+                       
                         <td>
                             <% order[i].products.forEach(product => { %>
                                 
@@ -44,7 +46,7 @@
                       
                         <td><a class="btn btn-danger" ><%=order[i].date.toISOString().substring(0,10)%></a></td>
                        
-                       
+                       <td><a class="btn btn-primary" href="/admin/view-order?id=<%=order[i]._id %>">View-Order</a></td>
                             
                             
                      
@@ -54,51 +56,12 @@
                 </tbody>
                
             </table>
-            <a href="/admin/download" class="btn btn-primary">Download</a>
+           
         </div>
     </div>
 </div>
 
 
 
-<script>document.getElementById('link7').classList.add("active") </script>
-
-<script>
-   const startDate = document.getElementById('start-date');
-const endDate = document.getElementById('end-date');
-const filterButton = document.querySelector('button');
-
-// Disable dates earlier than today
-
-
-// Add event listeners to date inputs
-startDate.addEventListener('change', () => {
-  endDate.setAttribute('min', startDate.value);
-});
-endDate.addEventListener('change', () => {
-  startDate.setAttribute('max', endDate.value);
-});
-
-// Add event listener to filter button
-filterButton.addEventListener('click', () => {
-  // Validate date inputs
-  if (startDate.value > endDate.value) {
-    alert('End date cannot be less than start date');
-    return;
-  }
-});
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
+<script>document.getElementById('link10').classList.add("active") </script>
 <%-include('../layout/admin-footer.ejs')%>

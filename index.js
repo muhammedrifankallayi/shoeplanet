@@ -2,11 +2,15 @@ const mongoose=require('mongoose');
 const cookie = require('cookie-parser')
 const user_route = require('./Routs/userRout')
 const admin_route = require('./Routs/adminRout')
-
+const dotenv = require('dotenv')
 const express=require('express');
 const path = require('path')
 const app=express()
-mongoose.connect("mongodb://127.0.0.1:27017/user_data_management");
+mongoose.connect(process.env.mongodb).then(()=>{
+    console.log('connected');
+}).catch(()=>{
+    console.log('MongoDB connecton error!');
+})
 
 app.use(express.static('public'))
 
@@ -23,7 +27,6 @@ app.set('views','views/user-view')
 app.use('/',user_route)
 
 app.use('/admin',admin_route)
-
 
 
 

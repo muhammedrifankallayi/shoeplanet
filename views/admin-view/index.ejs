@@ -52,8 +52,9 @@
             <!-- Sales Chart Start -->
 
            
-
+            <h3 style="text-align: center;text-decoration: underline;" >REVENUE PROGRESS</h3>
             <div class="chart_data d-flex">
+               
                 <div style="width: 25rem;">
                     <canvas id="myChart"></canvas>
                 </div>
@@ -74,46 +75,55 @@
                     <input type="hidden" id="input12" value="<%=yearChart[11]%>">
                 </div>
             </div>
-            
+            <br>
+            <br>
+<hr style="color: aliceblue;" >
             <!-- Sales Chart End -->
-
-
-            <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Recent Sale</h6>
-                        
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <!-- <tr class="text-dark">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice</th>
-                                    <th scope="col">Customer</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr> -->
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <!-- <td><input class="form-check-input" type="checkbox"></td> -->
-                                    <td>RECENT SALES REPORT</td>
-                                    <!-- <td>SALES</td>
-                                    <td>REPORt</td>
-                                    <td>$123</td>
-                                    <td>Paid</td> -->
-                                    <td class=""><a class="btn btn-sm btn-success" href="/admin/export-order-pdf">SALES REPORT DOWNLOAD</a></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
+            <h3 style="text-align: center;text-decoration: underline;" >USER PROGRESS</h3>
+            <div class="chart_data d-flex">
+               
+              
+                <div style="width: 45rem;">
+                    <canvas id="barChartuser"></canvas>
+                    <input type="hidden" id="input1u" value="<%=yearChartuser[0]%>">
+                    <input type="hidden" id="input2u" value="<%=yearChartuser[1]%>">
+                    <input type="hidden" id="input3u" value="<%=yearChartuser[2]%>">
+                    <input type="hidden" id="input4u" value="<%=yearChartuser[3]%>">
+                    <input type="hidden" id="input5u" value="<%=yearChartuser[4]%>">
+                    <input type="hidden" id="input6u" value="<%=yearChartuser[5]%>">
+                    <input type="hidden" id="input7u" value="<%=yearChartuser[6]%>">
+                    <input type="hidden" id="input8u" value="<%=yearChartuser[7]%>">
+                    <input type="hidden" id="input9u" value="<%=yearChartuser[8]%>">
+                    <input type="hidden" id="input10u" value="<%=yearChartuser[9]%>">
+                    <input type="hidden" id="input11u" value="<%=yearChartuser[10]%>">
+                    <input type="hidden" id="input12u" value="<%=yearChartuser[11]%>">
+                </div>
+                <hr>
+                <div style="width: 25rem;">
+                    <canvas id="myChartuser"></canvas>
                 </div>
             </div>
+            <hr style="color: aliceblue;" >
+            <div class="card bg-dark">
+                <div >
+                    <h3 style="text-align: center;text-decoration: underline;" >Items selled per year</h3>
+                    <canvas id="myChart-items"></canvas>
+                    <input type="hidden" id="salescount1" value="<%=salescount[0]%>">
+                    <input type="hidden" id="salescount2" value="<%=salescount[1]%>">
+                    <input type="hidden" id="salescount3" value="<%=salescount[2]%>">
+                    <input type="hidden" id="salescount4" value="<%=salescount[3]%>">
+                    <input type="hidden" id="salescount5" value="<%=salescount[4]%>">
+                    <input type="hidden" id="salescount6" value="<%=salescount[5]%>">
+                    <input type="hidden" id="salescount7" value="<%=salescount[6]%>">
+                    <input type="hidden" id="salescount8" value="<%=salescount[7]%>">
+                    <input type="hidden" id="salescount9" value="<%=salescount[8]%>">
+                    <input type="hidden" id="salescount10" value="<%=salescount[9]%>">
+                    <input type="hidden" id="salescount11" value="<%=salescount[10]%>">
+                    <input type="hidden" id="salescount12" value="<%=salescount[11]%>">
+                </div>
+            </div>
+            <!-- Recent Sales Start -->
+          
             <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/admin_assets/lib/chart/chart.min.js"></script>
@@ -131,7 +141,7 @@
     <script>
         const ctx = document.getElementById('myChart');
         const barChart = document.getElementById('barChart')
-
+const barChartItems = document.getElementById("myChart-items")
         
         const input1 = Number(document.getElementById('input1').value)
         const input2 = Number(document.getElementById('input2').value)
@@ -190,6 +200,139 @@
                 }]
             }
         });
+
+//user side
+const ctxuser = document.getElementById('myChartuser');
+        const barChartuser = document.getElementById('barChartuser')
+
+        
+        const input1u = Number(document.getElementById('input1u').value)
+        const input2u = Number(document.getElementById('input2u').value)
+        const input3u = Number(document.getElementById('input3u').value)
+        const input4u = Number(document.getElementById('input4u').value)
+        const input5u = Number(document.getElementById('input5u').value)
+        const input6u = Number(document.getElementById('input6u').value)
+        const input7u = Number(document.getElementById('input7u').value)
+        const input8u = Number(document.getElementById('input8u').value)
+        const input9u = Number(document.getElementById('input9u').value)
+        const input10u = Number(document.getElementById('input10u').value)
+        const input11u = Number(document.getElementById('input11u').value)
+        const input12u = Number(document.getElementById('input12u').value)
+
+        new Chart(barChartuser, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'monthly sale report',
+                    data: [input1u, input2u, input3u, input4u, input5u, input6u, input7u, input8u, input9u, input10u, input11u, input12u],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+        new Chart(ctxuser, {
+  type: 'pie',
+  data: {
+    labels:  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [{
+      label: 'Payment Method',
+      data: ['<%=yearChartuser[0]%>', '<%=yearChartuser[1]%>', '<%=yearChartuser[2]%>', '<%=yearChartuser[3]%>', '<%=yearChartuser[4]%>', '<%=yearChartuser[5]%>', '<%=yearChartuser[6]%>', '<%=yearChartuser[7]%>', '<%=yearChartuser[8]%>', '<%=yearChartuser[9]%>', '<%=yearChartuser[10]%>', '<%=yearChartuser[11]%>'],
+      backgroundColor: [
+        'rgb(54, 162, 235)',
+        'rgb(77, 166, 255)',
+        'rgb(99, 171, 255)',
+        'rgb(122, 175, 255)',
+        'rgb(144, 180, 255)',
+        'rgb(166, 184, 255)',
+        'rgb(189, 189, 255)',
+        'rgb(211, 193, 255)',
+        'rgb(233, 198, 255)',
+        'rgb(255, 202, 255)',
+        'rgb(255, 225, 255)',
+        'rgb(255, 247, 255)'
+      ],
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        type: 'linear',
+        ticks: {
+          precision: 0, // show integers only
+          beginAtZero: true // start at 0
+        }
+      }]
+    }
+  }
+});
+
+// item progress
+
+        const salescount1 = Number(document.getElementById('salescount1').value)
+        const salescount2 = Number(document.getElementById('salescount2').value)
+        const salescount3 = Number(document.getElementById('salescount3').value)
+        const salescount4 = Number(document.getElementById('salescount4').value)
+        const salescount5 = Number(document.getElementById('salescount5').value)
+        const salescount6 = Number(document.getElementById('salescount6').value)
+        const salescount7 = Number(document.getElementById('salescount7').value)
+        const salescount8 = Number(document.getElementById('salescount8').value)
+        const salescount9 = Number(document.getElementById('salescount9').value)
+        const salescount10 = Number(document.getElementById('salescount10').value)
+        const salescount11 = Number(document.getElementById('salescount11').value)
+        const salescount12 = Number(document.getElementById('salescount12').value)
+
+
+new Chart(barChartItems, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'monthly sale report',
+                    data: [salescount1, salescount2, salescount3, salescount4, salescount5, salescount6, salescount7, salescount8, salescount9, salescount10, salescount11, salescount12],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });    
+
+
+
     </script>
 
 

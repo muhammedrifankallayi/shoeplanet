@@ -25,6 +25,7 @@ admin_route.post('/', adminController.VerifySignin)
 // dashbord  
 admin_route.get('/index', auth.isadnlogin, adminController.LoadDashboard)
 
+admin_route.get("/logout",adminController.Logout)
 
 admin_route.get('/userdata', auth.isadnlogin, adminController.LoadUserData)
 admin_route.get('/form', auth.isadnlogin, adminController.LoadForm)
@@ -43,8 +44,12 @@ admin_route.post('/addproduct', auth.isadnlogin, multer.upload.array('image',5),
 admin_route.get('/deleteproduct', auth.isadnlogin, adminController.DeleteProduct)
 admin_route.get('/editproduct', auth.isadnlogin, adminController.LoadEditProduct)
 admin_route.post('/editproduct', auth.isadnlogin, multer.upload.array('image',5), adminController.AddEditProduct)
+// order  routesssss...
 admin_route.get('/ordercancel', auth.isadnlogin,adminController.CancelOrder)
 admin_route.post('/orderstatus', auth.isadnlogin,adminController.OrderStatus)
+admin_route.get('/orderdetails',adminController.OrderDetails)
+admin_route.get('/view-order',adminController.vieworder)
+
 admin_route.post('/dlt-img', auth.isadnlogin,adminController.DltImg)
 
 admin_route.get('/salesreport', auth.isadnlogin,adminController.SalesReport)

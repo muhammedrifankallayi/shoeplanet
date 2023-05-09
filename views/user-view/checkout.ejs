@@ -105,11 +105,13 @@
                                 
                                     <%=value.fname%> <br>
                                     <%=value.adress%> <br>
-                                    Ph : <%=value.mobile%>,
+                                    <%=value.mobile%> <br>
                                     <%=value.email%> <br>
                                     <%=value.pincode %>
                                 </label>
                                 <br>
+                                <input type="hidden" id="order-email" value="<%=value.email%> "  >
+                                <input type="hidden" id="order-mobile" value="<%=value.mobile%> "  >
                                 <div style="display: flex;">
                                     <div>
                                         <a class="btn hero-btn" style="color: rgb(248, 246, 246);" href="/edit_address?id=<%=value._id%>">edit</a>
@@ -293,6 +295,8 @@ $.ajax({
 
 $("#checkout").submit((e)=>{
         const amount = document.getElementById("total1").value;
+        const email = document.getElementById("order-email").value
+        const mobile = document.getElementById("order-mobile").value
         console.log("hiii");
         console.log(amount);
         // const amount2 = document.getElementById("gt2").innerHTML;
@@ -310,7 +314,9 @@ $("#checkout").submit((e)=>{
             amount:amount,
             adress:address,
             optradio:payment,
-            wallet
+            wallet,
+            email,
+            mobile
           },
           success:(response)=>{
             if(response.success){
@@ -398,6 +404,12 @@ function couponremove(){
   },success:(response)=>{
     if(response.success){
       location.reload()
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'this coupon used before for a order'
+      })
     }
     
   }

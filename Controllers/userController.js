@@ -12,6 +12,7 @@ const Address = require("../model/addressModel")
 const dotenv = require('dotenv')
 const Razorpay = require('razorpay');
 const { search } = require('../Routs/userRout');
+const Wallet = require("../model/walletHistory")
 
 dotenv.config()
 
@@ -246,7 +247,7 @@ const VerifyOtp = async (req, res) => {
             const user = new Users({
                 username: req.query.username,
                 mobile: req.query.mobile,
-                Date: currentDate,
+                Date:new Date(),
                 email: req.query.email,
                 password: req.query.Pass,
                 is_verified: 1,
@@ -656,7 +657,17 @@ const SortPrice = async (req, res) => {
 
 const RemoveCoupen = async(req,res)=>{
     try {
-        console.log('hai');
+
+   const check =  await Coupon.findOne({couponcode:req.session.code})
+      if(check.is_placed == false){
+        const data = await Coupon.findOneAndUpdate({couponcode:req.session.code},{$pull:{user:req.session.user_id}})
+if(data){
+    console.log('hello');
+    res.json({success:true})
+}
+      }else{
+        res.json({false:true})
+      }
 const data = await Coupon.findOneAndUpdate({couponcode:req.session.code},{$pull:{user:req.session.user_id}})
 if(data){
     console.log('hello');
@@ -671,11 +682,24 @@ if(data){
 }
 const showcoupons  = async (req,res)=>{
     try {
-        res.render("coupons") 
+        const data = await Coupon.find({user:{$ne:req.session.user_id}})
+        res.render("coupons",{data}) 
     } catch (error) {
         console.log(error.message);
     }
 }
+const Listwallethistory = async(req,res)=>{
+    try {
+
+const data  = await Wallet.find({userId:req.session.user_id})
+
+       res.render("wallet-history",{data}) 
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 
 
 
@@ -686,7 +710,7 @@ module.exports = {
     LoadMen,
     LoadAbout,
     LoadContact,
-    LoadWoman,          // product page
+    LoadWoman,        // product page
     LoadAddtowishlist,
     LoadProductdetail,
     LoadOrderComplete,
@@ -713,9 +737,9 @@ module.exports = {
     SearchResult,
     SortPrice,
     RemoveCoupen,
-    showcoupons
+    showcoupons,
    
-
+    Listwallethistory
 
 
 }

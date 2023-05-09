@@ -29,7 +29,7 @@
                         <td><%= products[i].catagory %></td>
                         <td>$<%= products[i].price %></td>
                        
-                      <td>   <img class=""  src="img/<%=products[i].image[0]%>" alt="" style="width: 40px; height: 40px;"></td>
+                      <td>   <img class=""  src="<%=products[i].image[0]%>" alt="" style="width: 40px; height: 40px;"></td>
                      
                         <td><a href="/admin/editproduct?id=<%=products[i]._id%>" class="btn btn-warning" >Edit</a></td>
                         <td><a href="/admin/deleteproduct?id=<%=products[i]._id%>" class="btn btn-danger" >Delete </a></td>

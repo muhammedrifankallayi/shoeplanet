@@ -14,6 +14,14 @@ deliveryDetails:{
     type:String,
     require:true
 },
+email:{
+    type:String,
+    required:true
+},
+mobile:{
+    type:Number,
+    required:true
+},
 paymentMethod:{
     type:String,
     require:true
@@ -47,9 +55,13 @@ status:{
 },
 payment_id:{
     type:String
+},
+
+
+delivery_date:{
+    type:Date,
+    
 }
-
-
 }
 )
 module.exports=mongoose.model('Orders',ordershema)

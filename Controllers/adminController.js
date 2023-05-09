@@ -2,6 +2,7 @@ const Users = require('../model/userModel')
 const Catagory = require('../model/catagoryModel')
 const Product = require('../model/productModel')
 const Coupen = require('../model/coupenModel')
+const Address = require('../model/addressModel')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
 const path = require('path')
@@ -9,6 +10,26 @@ const Order = require('../model/orderModel')
 const sharp = require('sharp')
 const ejs = require('ejs')
 const pdf = require('html-pdf')
+const cloudinary = require('cloudinary').v2;
+
+
+// Configuration 
+cloudinary.config({
+    cloud_name: "dwgjltcnm",
+    api_key: "121164443511553",
+    api_secret: "R4JcTMfn1ZEIRFRq3jkh0G1kteo"
+  });
+  
+
+
+const Logout = async(req,res)=>{
+    try {
+       req.session.destroy()
+       res.redirect("/admin/") 
+    } catch (error) {
+        
+    }
+}
 
 
 const LoadDashboard = async(req,res)=>{
@@ -21,7 +42,7 @@ const LoadDashboard = async(req,res)=>{
                 orderData.forEach(function (value) {
                     SubTotal = SubTotal + value.totalAmount;
                 })
-        
+       
                 const cod = await Order.find({ paymentMethod: "COD" }).count()
                 const online = await Order.find({ paymentMethod: "banktransfer" }).count()
                 const totalOrder = await Order.find({ status: { $ne: "cancelled" } }).count()
@@ -47,7 +68,29 @@ const LoadDashboard = async(req,res)=>{
                     },
                     { $sort: { _id: 1 } }
                 ])
-               
+               //user progressssss
+
+
+            
+
+const userCountByMonth = await Users.aggregate([
+  {
+    $match: {
+      Date: { $gte: currentYear } // get all user records created from the start of the current year
+    }
+  },
+  {
+    $group: {
+      _id: { $dateToString: { format: "%m", date: "$Date" } }, // group by month and year
+      total: { $sum: 1 },
+      count: { $sum: 1 } // calculate the total count of users for each month
+    }
+  },
+  {
+    $sort: { _id: 1 } // sort by month in ascending order
+  }
+]);
+
         
       
                 let sales = []
@@ -73,17 +116,43 @@ const LoadDashboard = async(req,res)=>{
                 for (i = 0; i < sales.length; i++) {
                     yearChart.push(sales[i].total)
                 }
+      console.log(yearChart);
+
+// users progress
+let user = []
+for (i = 1; i < 13; i++) {
+    let result = true
+    for (j = 0; j < userCountByMonth.length; j++) {
+        result = false
+        if (userCountByMonth[j]._id == i) {
+            user.push(userCountByMonth[j])
+            break;
+        } else {
+            result = true
+
+        }
+    }
+    if (result) {
+        user.push({ _id: i, total: 0, count: 0 })
+    }
+
+}
+
+let yearChartuser = []
+for (i = 0; i < user.length; i++) {
+    yearChartuser.push(user[i].total)
+}
+let salescount = []
+for (i = 0; i < sales.length; i++) {
+    salescount.push(sales[i].count)
+}
+console.log(userCountByMonth);
+console.log(salesByYear);
+console.log(yearChartuser);
+
+
         
-        
-        
-                //  const data = await order.find({status: 'cancelled'})
-        
-                //  const date = data[0].date.toISOString().substring(8,10)
-                //  const today = new Date()
-                //  const todayDate = today.toISOString().substring(8,10)
-      
-        
-                res.render('index', { data: orderData, total: SubTotal, cod, online, totalOrder, totalUser, totalProducts, yearChart })
+                res.render('index', { data: orderData, total: SubTotal, cod, online, totalOrder, totalUser, totalProducts, yearChart ,yearChartuser,salescount})
         
            
         
@@ -301,12 +370,16 @@ const InsertProduct = async(req,res)=>{
       }else{
 
         const img = []
+        cloudcdn=[]
         for (let i = 0; i < req.files.length; i++) {
           img[i]= req.files[i].filename
           
 await sharp('./public/admin/img2/'+req.files[i].filename)
         .resize(300,300)
         .toFile('./public/admin/img/'+req.files[i].filename);
+        const data= await cloudinary.uploader.upload('./public/admin/img/'+req.files[i].filename)
+        cloudcdn.push(data.secure_url)
+    }
         }
     
     const product = new Product({
@@ -314,7 +387,7 @@ await sharp('./public/admin/img2/'+req.files[i].filename)
 
         name:req.body.name,
         price:req.body.price,
-        image:img,
+        image:cloudcdn,
         catagory:req.body.catagory,
         description:req.body.description,
         stock:req.body.stock
@@ -323,7 +396,7 @@ await sharp('./public/admin/img2/'+req.files[i].filename)
     if(Data){
         res.redirect('/admin/form')
     }
-}
+
   } catch (error) {
     console.log(error.message);
   }
@@ -397,8 +470,10 @@ const CancelOrder = async(req,res)=>{
 const OrderStatus = async(req,res)=>{
     try {
       const user = await Users.findOne({_id:req.session.user_id})
+      
         const Id =   req.body.id
         const Data = req.body.data
+       
         console.log(Id);
 console.log(Data);
        
@@ -407,6 +482,10 @@ console.log(Data);
      if(update.status=='Return Approved'||update.status=='Cancelled' ){
        const wallet = update.totalAmount+user.wallet
        await Users.findByIdAndUpdate({_id:req.session.user_id},{$set:{wallet:wallet}})
+     }
+      if(Data=='Delivered'){
+
+        await Order.findByIdAndUpdate({_id:Id},{$set:{delivery_date:new Date()}})
      }
      res.json({success:true})
     } catch (error) {
@@ -432,7 +511,7 @@ const SalesReport = async(req,res)=>{
     try {
          orderdetails = await Order.find().populate('products.productId')
         
-        console.log("hai");
+        
          const orders = orderdetails.map(order => ({
             _id: order._id,
             products: order.products.map(product => ({
@@ -574,10 +653,39 @@ const SalesFilter = async(req,res)=>{
         console.log(error.message);
     }
 }
+const OrderDetails = async(req,res)=>{
+    try {
+        orderdetails = await Order.find().populate('products.productId')
+        
+        
+         const orders = orderdetails.map(order => ({
+            _id: order._id,
+            products: order.products.map(product => ({
+                name: product.productId.name 
+            }))
+         }));
+         
+        res.render("orderdetails",{order:orderdetails,name:orders})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
+const vieworder = async(req,res)=>{
+    try {
+        const Id = req.query.id
+        const orderData=await Order.find({_id:Id}).populate('products.productId')
+        console.log(orderData.products);
+       
+        res.render('vieworder',{orderData})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 module.exports =  {
+    Logout,
     LoadDashboard,
     LoadChart,
     LoadForm,
@@ -608,6 +716,9 @@ module.exports =  {
     Addcoupen,
     CoupenDelete,
     LoadEditCoupon,
-    SalesFilter
+    SalesFilter,
+    OrderDetails,
+    vieworder
+
    
 }

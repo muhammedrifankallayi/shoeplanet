@@ -1,0 +1,71 @@
+<%-include('../layout/admin-header.ejs')%>
+
+<div class="colorlib-about">
+    <div class="container mt-3">
+      
+        <div class="row row-pb-lg">
+            
+            <% for(let i=0;i< orderData.length;i++){ %>
+                <input type="hidden" id="orderId" value="<%=orderData[i]._id%>" >
+                
+                 <% for(let j=0;j< orderData[i].products.length;j++){ %>
+                   
+            <div class="col-sm-6 "   >
+                <img  width="300px" height="300px" src="/admin/img/<%=orderData[i].products[j].productId.image[0]%>" alt="">
+            </div>
+            <div class="col-sm-6"  >
+                    <h2><%=orderData[i].products[j].productId.name%></h2>
+                    <p><%=orderData[i].products[j].productId.description%></p>
+                    <div class="display-tc">
+                        <label for="quantity">count<input type="button" id="quantity"  name="quantity" class="btn btn-sm" value="<%=orderData[i].products[j].count%>" min="1" max="100"></label>
+                        
+                    </div>
+                    <p>Price:<%=orderData[i].products[j].productId.price%></p>
+                    <p>Address:<%=orderData[i].deliveryDetails%></p>
+                <!-- <button class="btn btn-info" onclick="remove('<%=orderData[i]._id%>','<%=j%>' )" >remove-order</button> -->
+            
+        </div>
+        <hr class="m-4" width="100%" color="Grey" >
+            <%}%>
+
+            <div class="container mt-3">
+               
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User_Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Products</th>
+                            <th>GrandTotal</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        <tr>
+                            <td><%=orderData[i].user%></td>
+                            <td><%=orderData[i].email%></td>
+                            <td><%=orderData[i].mobile%></td>
+                          
+                            <td> 
+                                <% for(let j=0;j< orderData[i].products.length;j++){ %>
+                              <p><%=orderData[i].products[j].productId.name%> <span>: <%=orderData[i].products[j].productId.price%></span> </p>
+                              <%}%>   </td>
+                           <td>Price <span> :<%=orderData[i].totalAmount%></span></td>
+                        </tr>
+                      
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+          
+             <%}%>
+        </div>
+    </div>
+</div>
+
+<script> document.getElementById("link10").classList.add("active") </script>
+        
+<%-include('../layout/admin-footer.ejs')%>

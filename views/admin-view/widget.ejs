@@ -64,7 +64,7 @@
 function status(orderId,Id){
    
    var status = document.getElementById(Id).value
-    document.getElementById('llo').innerText=status
+  
    
 
     $.ajax({
@@ -88,12 +88,8 @@ function status(orderId,Id){
 }
 
 function statusreject(orderId,status){
-   
-  
-   
 
     $.ajax({
-        
             url:'/admin/orderstatus',
             method:'post',
             data:{

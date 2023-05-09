@@ -32,6 +32,7 @@
               <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
               <div class="d-flex justify-content-center mb-2">
                <a href="/editprofile" class="btn btn-primary" >Edit</a>
+              
                 <button type="button" class="btn btn-outline-primary ms-1">Message</button>
               </div>
             </div>
@@ -41,27 +42,21 @@
                   <h5 class="card-title">My Wallet</h5>
                   <h6 class="card-subtitle mb-2 text-muted">Available balance:</h6>
                   <h5 class="card-text" >$<%=user.wallet%>.00</h5>
-                  <a href="#" class="btn btn-primary">Add funds</a>
-                  <a href="#" class="btn btn-secondary">Withdraw funds</a>
+                  <a  class="btn btn-outline-primary ms-1" href="/wallet-history">wallet-history</a>
+                  <a class="btn btn-outline-primary ms-1" href="/coupons">
+                    
+                    <img height="20px" width="20px" src="/admin/imagies/coupon.png" alt="coupon">Coupons
+                   </a>
+                 
                 </div>
               </div>
 
 <!-- coupens -->
 <br>
-<div class="card-row">
+<div  class="card ">
+  
 
-    <%for (let i=0;i< coupon.length;i++){ %>
-    <div  class="card">
-     
-      <div class="card-body" id="coupen" >
-        <h5 style="text-align: center; border: 2px solid rgb(42, 97, 185); border-radius: 5px;" class="card-title  "><span style="  font-weight: calc(1000); " > COUPEN </span></h5>
-        <p   class="card-text  ">Use the code at checkout to get Rs.<%=coupon[i].discount%> off your Rs.<%=coupon[i].purchaceamount%> total purchase. <br><strong class="bg-secondary " >code:<%=coupon[i].couponcode%></strong> <br>EXP DATE : <%=coupon[i].expiredate.toISOString().substring(0,10) %> </p>
-      
-       
-      </div>
-     
-    </div>
-    <%}%>
+   
   </div>
  
 
@@ -164,8 +159,12 @@
   </section>
 
   <style>
-       
+    .card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       
-      
+    }
+  
 
-  </style>
+    </style>

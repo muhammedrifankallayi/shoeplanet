@@ -3,20 +3,19 @@ const Products = require('../model/productModel')
 const Users = require('../model/userModel')
 const Adress =require('../model/addressModel')
 const Order = require('../model/orderModel')
+const WalletHistory = require('../model/walletHistory')
+const Coupon = require("../model/coupenModel")
+const dotenv = require('dotenv')
 const Razorpay = require('razorpay')
 var instance = new Razorpay({
     key_id: 'rzp_test_EPM97YtygusiKT',
-    key_secret: 'yahzAX4mg8BSZSLO1RB7ubDQ',
+    key_secret: process.env.RAZORPAYsecret,
   });
 
 var CPRODUT  
 var TOTAL  
 
-var date = new Date();
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-let currentDate = `${day}-${month}-${year}`
+
 
 
     const addToCart=async(req,res)=>{
@@ -295,7 +294,8 @@ const UpdateAddress  = async(req,res)=>{
                 pincode:req.body.pincode,
                 mobile:req.body.mobile,
                 city:req.body.city,
-                place:req.body.village
+                place:req.body.village,
+                
         }}})
         if(req.query.profile){
             res.redirect('/profile')
@@ -343,6 +343,8 @@ var Nwallet
             user_id:req.session.user_id,
             paymentMethod: payment,
             products: products,
+            email:req.body.email,
+            mobile:req.body.mobile,
             totalAmount: amount,
             date: new Date(),
             status: status
@@ -353,6 +355,7 @@ var Nwallet
 
         if (status === "placed") {
             await Cart.deleteOne({ userId: session });
+            await Coupon.findOneAndUpdate({couponcode:req.session.code},{$set:{is_placed:true}})
             console.log('COD oreder successful');
            res.json({success:true})
         } else {
@@ -443,7 +446,7 @@ const verifyOnlinePayment =async(req,res)=>{
         const details= (req.body)
         console.log(details);
         const crypto = require('crypto');
-        let hmac = crypto.createHmac('sha256', 'yahzAX4mg8BSZSLO1RB7ubDQ');
+        let hmac = crypto.createHmac('sha256',process.env.RAZORPAYsecret);
 
         hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id)  
             
@@ -460,6 +463,7 @@ const verifyOnlinePayment =async(req,res)=>{
             await Order.findByIdAndUpdate({_id:details.order.receipt},{$set:{payment_id:details.payment.razorpay_payment_id}});
             await Cart.deleteOne({userId:req.session.user_id});
             await Users.findByIdAndUpdate({_id: req.session.user_id},{$set:{wallet:Nwallet}})
+            await Coupon.findOneAndUpdate({couponcode:req.session.code},{$set:{is_placed:true}})
             res.json({success:true});
             console.log('online pay oreder successful');
         }else{
@@ -473,11 +477,49 @@ const verifyOnlinePayment =async(req,res)=>{
         
     }
 }
+
+
+// Get current date
+const today = new Date();
+// Add two weeks
+const afterTwoWeeks = new Date(today);
+afterTwoWeeks.setDate(today.getDate() + 14);
+// Format result as string in desired format (YYYY-MM-DD)
+const formattedDate = afterTwoWeeks.toISOString().slice(0, 10);
+console.log(formattedDate); // Outputs "2023-05-22" (assuming today is May 8, 2023)
+
+
+
 const CancelOrder = async(req,res)=>{
+
     try {
        const id = req.body.id
        const status = req.body.status 
-       console.log(status);
+     
+const order = await Order.findOne({_id:id})
+
+// Create a new Date object for the delivery date (replace "deliveryDate" with the actual field name in your data)
+const deliveryDate = order.delivery_date
+
+// Add 14 days to the delivery date
+const deliveryDatePlus14Days = new Date(deliveryDate.getTime());
+deliveryDatePlus14Days.setTime(deliveryDate.getTime() + (1000 * 60 * 60 * 24 * 14));
+
+// Format result as string in desired format (YYYY-MM-DD)
+const formattedDate = deliveryDatePlus14Days
+
+console.log(formattedDate); // Outputs the delivery date plus 14 days in the format "YYYY-MM-DD" (e.g. "2023-05-15")
+
+
+
+
+       if (status=='Return'){
+if(new Date() <=formattedDate){
+      await Order.findByIdAndUpdate({_id:id},{$set:{status:status}})
+}else{
+    res.json({success:false})
+}
+       }else{
        const Data  = await Order.findByIdAndUpdate({_id:id},{$set:{status:status}})
        const userorder = await Order.findOne({_id:id})
        console.log('hai');
@@ -489,13 +531,23 @@ const CancelOrder = async(req,res)=>{
             console.log(wallet+"wallet");
             const amount =wallet.wallet+userorder.totalAmount
             console.log(amount+"amount");
-           await Users.findByIdAndUpdate({_id:req.session.user_id},{$set:{wallet:amount}})
+          const userWallet= await Users.findByIdAndUpdate({_id:req.session.user_id},{$set:{wallet:amount}})
+        
+       // wallet history
+        const WH = new WalletHistory({
+            userId:req.session.user_id,
+            balance:amount,
+            withdraw:userorder.totalAmount,  //withdraw or add
+            date:new Date(),
+            is_add:true
+           })
+           await WH.save()
         }
-       
-       
-       }
       
+       }
        res.json({success:true})
+    }
+      
     } catch (error) {
         console.log(error.message);
     }

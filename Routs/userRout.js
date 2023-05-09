@@ -115,6 +115,9 @@ user_route.post("/search",auth.islogin,userController.SearchResult)
 
 user_route.get("/sortprice",auth.islogin,userController.SortPrice)
 
+// wallet  history...........
+
+user_route.get("/wallet-history",auth.islogin,userController.Listwallethistory)
 
 // user_route.get('*',(req,res)=>{
 //     res.redirect('/index')

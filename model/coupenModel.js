@@ -29,6 +29,11 @@ const couponschema= new mongoose.Schema({
     status:{
         type:Boolean,
         required:true
+    },
+   is_placed:{
+        type:Boolean,
+        default:false
+        
     }
 })
 module.exports= mongoose.model('Coupon',couponschema)
