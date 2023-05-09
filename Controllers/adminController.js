@@ -8,8 +8,8 @@ const fs = require('fs')
 const path = require('path')
 const Order = require('../model/orderModel')
 const sharp = require('sharp')
-const ejs = require('ejs')
-const pdf = require('html-pdf')
+// const ejs = require('ejs')
+// const pdf = require('html-pdf')
 const cloudinary = require('cloudinary').v2;
 
 
@@ -530,42 +530,42 @@ const SalesReport = async(req,res)=>{
 
 //   pdf downloading
 
-const download = async(req,res)=>{
-    try {
+// const download = async(req,res)=>{
+//     try {
        
         
         
-        const data={
-            report:orderdetails
-        }
+//         const data={
+//             report:orderdetails
+//         }
 
-        const filepath =path.resolve(__dirname,'../views/admin-view/salesreportpdf.ejs')
-        const htmlstring=fs.readFileSync(filepath).toString()
+//         const filepath =path.resolve(__dirname,'../views/admin-view/salesreportpdf.ejs')
+//         const htmlstring=fs.readFileSync(filepath).toString()
       
-       let option={
-        format:"A3"
-       }
-       const ejsData=  ejs.render(htmlstring,data)
-       pdf.create(ejsData,option).toFile('salesReport.pdf',(err,response)=>{
-        if(err) console.log(err);
+//        let option={
+//         format:"A3"
+//        }
+//        const ejsData=  ejs.render(htmlstring,data)
+//        pdf.create(ejsData,option).toFile('salesReport.pdf',(err,response)=>{
+//         if(err) console.log(err);
        
-      const filepath= path.resolve(__dirname,'../salesReport.pdf')
-      fs.readFile(filepath,(err,file)=>{
-        if(err) {
-            console.log(err);
-            return res.status(500).send('could not download file')
-        }
-        res.setHeader('Content-Type','application/pdf')
-        res.setHeader('Content-Disposition','attatchment;filename="sales Report.pdf"')
+//       const filepath= path.resolve(__dirname,'../salesReport.pdf')
+//       fs.readFile(filepath,(err,file)=>{
+//         if(err) {
+//             console.log(err);
+//             return res.status(500).send('could not download file')
+//         }
+//         res.setHeader('Content-Type','application/pdf')
+//         res.setHeader('Content-Disposition','attatchment;filename="sales Report.pdf"')
 
-        res.send(file)
+//         res.send(file)
 
-      })
-       })
-    } catch (error) {
-        console.log(error.messsage);
-    }
-}
+//       })
+//        })
+//     } catch (error) {
+//         console.log(error.messsage);
+//     }
+// }
 
 
 // coupen controlling ...
@@ -712,7 +712,7 @@ module.exports =  {
     OrderStatus,
     DltImg,
     SalesReport,
-    download,
+    // download,
     LoadCoupen,
     LoadAddcoupen,
     Addcoupen,

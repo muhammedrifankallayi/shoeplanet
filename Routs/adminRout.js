@@ -53,7 +53,7 @@ admin_route.get('/view-order',adminController.vieworder)
 admin_route.post('/dlt-img', auth.isadnlogin,adminController.DltImg)
 
 admin_route.get('/salesreport', auth.isadnlogin,adminController.SalesReport)
-admin_route.get('/download', auth.isadnlogin,adminController.download)
+// admin_route.get('/download', auth.isadnlogin,adminController.download)
 admin_route.post("/salesfilter", auth.isadnlogin,adminController.SalesFilter)
 
 admin_route.post("/deletecoupen", auth.isadnlogin,adminController.CoupenDelete)
