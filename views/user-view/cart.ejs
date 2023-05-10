@@ -44,7 +44,7 @@
 						<% for(let i=0 ;i<products.length;i++){%>
 						<div id="<%=products[i].productId._id%>" class="product-cart d-flex">
 							<div class="one-forth">
-								<div class="product-img" style="background-image: url(admin/img/<%=products[i].productId.image[0]%>);">
+								<div class="product-img" style="background-image: url(<%=products[i].productId.image[0]%>);">
 								</div>
 								<div class="display-tc">
 									<h3  ><%=products[i].productId.name%></h3>
@@ -91,34 +91,26 @@
 					<div class="col-md-12">
 						<div class="total-wrap">
 							<div class="row">
-								<div class="col-sm-8">
-									<form action="#">
-										<div class="row form-group">
-											<div class="col-sm-9">
-												<input type="text" name="quantity" class="form-control input-number" placeholder="Your Coupon Number...">
-											</div>
-											<div class="col-sm-3">
-												<input type="submit" value="Apply Coupon" class="btn btn-primary">
-											</div>
-										</div>
-									</form>
-								</div>
+								
 								<div class="col-sm-4 text-center">
 									<div class="total">
 										<div class="sub">
 											<p><span>Subtotal:</span> <span><%=Total%></span></p>
 											
 											<p><span>Delivery:</span> <span>$0.00</span></p>
-											<p><span>Discount:</span> <span>$45.00</span></p>
+											
 											<input type="hidden"  name="Total"  value="<%=Total%>" >
 										</div>
 										<div class="grand-total">
-											<p><span><strong>Total:</strong></span> <span>$<%=Total+45%></span></p>
+											<p><span><strong>Total:</strong></span> <span>$<%=Total%></span></p>
 											
 										</div>
 										
 									</div>
-									<input type="submit" class="btn btn-success float-right  mt-2 " value="PROCEED TO CHECKOUT"  >
+									<div style="padding-right: 80px;" >
+										<input  type="submit" class="btn btn-success float-right  mt-2 " value="PROCEED TO CHECKOUT"  >
+									</div>
+									
 									
 								</div>
 							</div>

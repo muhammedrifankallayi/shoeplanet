@@ -33,7 +33,7 @@
                         <% for(let j=0;j< orderData[i].products.length;j++){ %>
 						<div class="product-cart d-flex border-right-0 rounded-left border-info">
 							<div class="one-forth">
-								<div class="product-img" style="background-image: url(admin/img/<%=orderData[i].products[j].productId.image[0]%>);">
+								<div class="product-img" style="background-image: url(<%=orderData[i].products[j].productId.image[0]%>);">
 								</div>
 								<div class="display-tc">
 									<h3><%=orderData[i].products[j].productId.name%></h3>

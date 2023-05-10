@@ -24,7 +24,7 @@
                       <div id="image-preview-container"></div>
                      
                    <%   for(let i=0;i< info.image.length;i++){  %>
-                      <img id="image-preview"  src="/admin/img/<%=info.image[i]%>"  width="100px" height="100px" >
+                      <img id="image-preview"  src="<%=info.image[i]%>"  width="100px" height="100px" >
                       <a onclick="sendRequest('<%=info._id%>','<%=i%>')" class="btn btn-sm mb-5"  href=""><i class="fa fa-times mb-5"></i></a>
                      <input type="hidden" id="ids" value="<%=info._id%>"  >
                       <%}%>
@@ -55,7 +55,7 @@
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">stock</label>
                         <input type="number" name="stock" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" value="<%=info.price%>" >
+                            aria-describedby="emailHelp" value="<%=info.stock%>" >
                         <div id="emailHelp" class="form-text">
                         </div>
                   </div>

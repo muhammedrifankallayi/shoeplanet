@@ -187,12 +187,17 @@
 								
 								<div class="product-entry border">
 									<a href="/product-detail?id=<%=data[i]._id%>" class="prod-img">
-										<img width="300px" height="400px" src="admin/img/<%=data[i].image[0] %>" class="img-fluid" alt="Free html5 bootstrap 4 template">
+										<img width="300px" height="400px" src="<%=data[i].image[0] %>" class="img-fluid" alt="Free html5 bootstrap 4 template">
+										
 									</a>
 									<div class="desc">
 										<h2><a href="#"><%=data[i].name%></a></h2>
 										<span class="price">$<%=data[i].price%></span>
+										<% if(data[i].stock<1){ %>
+											<h4 style="color: red;" >stock out</h4>
+											<%}else{%>
 										<button class="btn btn-success" onclick="ToCart('<%=data[i]._id%>')" >Add to Cart</button>
+										<%}%>
 									</div>
 								</div>
 								

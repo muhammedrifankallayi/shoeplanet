@@ -23,6 +23,14 @@ var TOTAL
             const productid=req.body.product_id
             const productData=await Products.findOne({_id:productid})
             const userData=await Users.findOne({_id:req.session.user_id})
+
+if(productData.stock==0){
+    res.json({stock:true})
+}else{
+
+
+
+
             if(req.session.user_id){
                 const userid=req.session.user_id;
                 const cartData=await Cart.findOne({userId:userid})
@@ -30,16 +38,18 @@ var TOTAL
                     const productExist= cartData.products.findIndex((product)=>product.productId==productid)
                     if(productExist != -1){
                         await Cart.updateOne({userId:userid,"products.productId":productid},{$inc:{"products.$.count":1}})
+                    
                         res.json({success:true})
                        
-                            // res.redirect('/women')
+                         
                        
                         
                     }else{
                         await Cart.findOneAndUpdate({userId:req.session.user_id},{$push:{products:{productId:productid,productPrice:productData.price}}})
-                       res.json({success:true})
+                     
+                        res.json({success:true})
                       
-                        // res.redirect('/women')
+                       
                   
                     }
                 }else{
@@ -51,6 +61,7 @@ var TOTAL
                            
                         }]
                     })
+                
                     const cartDatas=await cart.save()
                     if(cartDatas){
                          res.json({success:true})
@@ -67,6 +78,7 @@ var TOTAL
             }else{
                 res.redirect('/login')
             }
+        }
         } catch (error){
             console.log(error.message);
            
@@ -136,7 +148,7 @@ var TOTAL
               const cartData= await Cart.updateOne({userId:userid,"products._id":req.body.id},{$inc:{"products.$.count":req.body.count}})
 
               const updatedCartData = await Cart.findOne({ userId: userid, "products._id": req.body.id });
-
+             
               // Access the count field of the updated product
               const updatedCount = updatedCartData.products.find(p => p._id == req.body.id).count;
               
@@ -317,13 +329,29 @@ const UpdateAddress  = async(req,res)=>{
 
 var amount
 var Nwallet
+
  const placeOrder = async (req, res) => {
     try {
         const userData = await Users.findOne({ _id: req.session.user_id });
         const session=req.session.user_id
         const total=await Cart.aggregate([{$match:{userId: req.session.user_id}},{$unwind:'$products'},{$project:{productPrice:'$products.productPrice',cou:'$products.count'}},{$group:{_id:null,total:{$sum:{$multiply:['$productPrice','$cou']}}}}])
                 const Total =total[0].total;
-
+                const results = await Cart.aggregate([
+                    {
+                      $match: { userId: req.session.user_id }
+                    },
+                    {
+                      $unwind: '$products'
+                    },
+                    {
+                      $group: {
+                        _id: '$products.productId',
+                        count: { $sum: '$products.count' }
+                      }
+                    }
+                  ]);
+                  
+                  console.log(results);
     
      amount = parseInt(req.body.amount)
       
@@ -337,7 +365,7 @@ var Nwallet
       
         const status = payment === "COD" ? "placed" : "pending";
 
-        const newOrder = new Order({
+     const  newOrder = new Order({
             deliveryDetails:address,
             user: userData.username,
             user_id:req.session.user_id,
@@ -354,6 +382,13 @@ var Nwallet
      
 
         if (status === "placed") {
+           
+           results.forEach(async(id)=>{
+            await Products.findByIdAndUpdate({_id:id._id},{$inc:{stock:-id.count}})
+        })
+              
+             
+              
             await Cart.deleteOne({ userId: session });
             await Coupon.findOneAndUpdate({couponcode:req.session.code},{$set:{is_placed:true}})
             console.log('COD oreder successful');
@@ -380,13 +415,23 @@ var Nwallet
                         currency: "INR",
                         receipt: ""+orderid
                 }
-           
+                results.forEach(async(id)=>{
+                    await Products.findByIdAndUpdate({_id:id._id},{$inc:{stock:-id.count}})
+                })
                 instance.orders.create(options,function(err,order){
                     res.json({order});
                 })
+
+//stock decrease
+
+  
                }else{
+                
+                results.forEach(async(id)=>{
+                    await Products.findByIdAndUpdate({_id:id._id},{$inc:{stock:-id.count}})
+                })
                 await Cart.deleteOne({ userId: session });
-                console.log('COD oreder successful');
+                console.log(' oreder successful');
                res.json({success:true})
                }
            

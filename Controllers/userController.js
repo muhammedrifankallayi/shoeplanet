@@ -69,10 +69,11 @@ const LoadHome = async (req, res) => {
                 user_id: Login_id
             }
         }])
+        const data = await Product.find()
         cartsize = cartsizes.length
 
         const uids = req.query.id
-        res.render('index', { id: uids, cartsize })
+        res.render('index', { id: uids, cartsize,data })
 
     } catch (error) {
         console.log(error.message);

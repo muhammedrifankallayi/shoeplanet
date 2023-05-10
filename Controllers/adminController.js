@@ -377,7 +377,7 @@ const InsertProduct = async(req,res)=>{
           img[i]= req.files[i].filename
           
 await sharp('./public/admin/img2/'+req.files[i].filename)
-        .resize(300,300)
+        .resize(600,600)
         .toFile('./public/admin/img/'+req.files[i].filename);
         const data= await cloudinary.uploader.upload('./public/admin/img/'+req.files[i].filename)
         cloudcdn.push(data.secure_url)
@@ -430,14 +430,16 @@ const AddEditProduct = async(req,res)=>{
     const img = []
     for (let i = 0; i < req.files.length; i++) {
         img[i]= req.files[i].filename
-        
+        cloudcdn=[]
 await sharp('./public/admin/img2/'+req.files[i].filename)
-      .resize(400,400)
+      .resize(600,600)
       .toFile('./public/admin/img/'+req.files[i].filename);
+      const data= await cloudinary.uploader.upload('./public/admin/img/'+req.files[i].filename)
+      cloudcdn.push(data.secure_url)
       }
 
     const Data = await Product.findByIdAndUpdate({_id:req.body.id},{$set:{name:req.body.name,catagory:req.body.catagory,price:req.body.price,description:req.body.description,stock:req.body.stock}})
-   await Product.findByIdAndUpdate({_id:req.body.id},{ $push: { image: { $each:img } } })
+   await Product.findByIdAndUpdate({_id:req.body.id},{ $push: { image: { $each:cloudcdn } } })
     if(Data){
         res.redirect('/admin/form')
     }

@@ -11,7 +11,7 @@
                  <% for(let j=0;j< orderData[i].products.length;j++){ %>
                    
             <div class="col-sm-6 "   >
-                <img  width="300px" height="300px" src="/admin/img/<%=orderData[i].products[j].productId.image[0]%>" alt="">
+                <img  width="300px" height="300px" src="<%=orderData[i].products[j].productId.image[0]%>" alt="">
             </div>
             <div class="col-sm-6"  >
                     <h2><%=orderData[i].products[j].productId.name%></h2>
