@@ -51,7 +51,7 @@
 						</div>
 						
 						<div class="col-sm-5 col-md-3">
-						
+							<div><li class="float-right " ><a class="btn btn-info" href="/logout"><span>Logout</span></a></li><a class="btn btn-primary" href="/profile"><strong>Profile</strong></a></div>
 			            <form action="/search" method="post" class="search-wrap">
 							
 			               <div class="form-group">
@@ -61,7 +61,7 @@
 			               <input type="hidden" id="cataHLT"  name="category"  value="<%=category%>" >
 							</div>
 			            </form>
-						<div><li class="float-right " ><a class="btn btn-info" href="/logout"><span>Logout</span></a></li><a class="btn btn-primary" href="/profile"><strong>Profile</strong></a></div>
+						
 			         </div>
 		         </div>
 <!-- ................. -->
@@ -79,7 +79,7 @@
 								<li><a  href="about"><span id="link3" class="btn" >About</span></a></li>
 								<li ><a  href="contact"><span  id="link4" class="btn" >Contact</span></a></li>
 								<li><a  href="myorders"><span id="link5" class="btn" >My orders</span></a></li>
-								<li class=""><a href="cart"><i class="icon-shopping-cart"><span id="link6" >Cart[]</span></i></a></li>
+								<li><a   href="cart"><span  id="link6"  class="btn" >Cart<i class="icon-shopping-cart"></i></span></a></li>
 								<!-- <li class="has-dropdown">
 									<a ><span id="link22" class="btn" >More</span></a>
 									<ul class="dropdown">
@@ -136,7 +136,7 @@
 
 
 
-		</script>
+		
 
 <!-- ........... -->
 
@@ -145,6 +145,7 @@
 				<div class="row">
 					<div class="col-lg-3 col-xl-3">
 						<div class="row">
+							
 							<div class="col-sm-12">
 								<div class="side border mb-1">
 									<h3>Catageries</h3>
@@ -174,7 +175,26 @@
 									</ul>
 								</div>
 							</div>
-						
+							<div class="block-26 mb-2">
+								<h4>Size</h4>
+						   <ul>
+							<li id="7" onclick="shoesize(7)" ><a  >7</a></li>
+				                 
+							<li id="8"  onclick="shoesize(8)" ><a  >8</a></li>
+						   
+							<li id="9" onclick="shoesize(9)" ><a   >9</a></li>
+						   
+							<li id="10" onclick="shoesize(10)" ><a   >10</a></li>
+						   
+							<li id="11" onclick="shoesize(11)" ><a  >11</a></li>
+						   
+							<li id="12" onclick="shoesize(12)" ><a >12</a></li>
+						   
+							<li id="13" onclick="shoesize(13)" ><a >13</a></li>
+						   
+							<li id="14" onclick="shoesize(14)" ><a >14</a></li>
+						   </ul>
+						</div>
 						
 							
 						</div>
@@ -255,21 +275,23 @@
 		</div>
 		
 		<style>.activ {color: blue;text-decoration:  underline;}</style>
-			<script>const myLink = document.getElementById("link2"); myLink.classList.add("activ")
-			const catagory = document.getElementById("cataHLT").value
-			document.getElementById(catagory).classList.add('activ')
+			<script>
 			const sort = document.getElementById("sort").value
 			document.getElementById(sort).classList.add('activ')
 			</script>
 
+<script>
+		const myLink = document.getElementById("link2"); myLink.classList.add("activ")
+			const catagory = document.getElementById("cataHLT").value
+			document.getElementById(catagory).classList.add('activ')
+</script>
+
+
 		<script>
 		
-			
-			
 const val = document.getElementById('kai').value
 			document.getElementById(val).classList.add('active')
 		
-
 value.classList.add('active')
 function ToCart(id){
   
@@ -288,18 +310,51 @@ function ToCart(id){
   showConfirmButton: false,
   timer: 1500
 })
-                   }
+                   }else if(response.size){
+					Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please selected a size!'
+      })
+
+				   }else{
+					Swal.fire({
+        icon: 'error',
+        title: 'Cant to add!',
+        text: 'Something went wrong!'
+      })
+				   }
                }
    
          })
       }
-
-	 
-	
-  
-
-
 		</script>
+<script>
+	function shoesize(size){
+		$.ajax({
+url:'/showsize',
+method:'post',
+data:{
+  size
+},
+success:(response)=>{
+for(let i=7;i<15;i++){
+	if(i==response.success){
+		document.getElementById(response.success).style.background='grey'
+	}else{
+		document.getElementById(i).style.background=''
+	}
+}
+	
+ }
+
+})
+	}
+	
+	</script>
+
+
+
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="sweetalert2.all.min.js"></script>
 		<script src="sweetalert2.min.js"></script>

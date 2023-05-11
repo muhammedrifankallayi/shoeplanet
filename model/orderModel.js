@@ -36,6 +36,9 @@ products:[
         count:{
             type:Number,
             require:true
+        },
+        shoeSize:{
+            type:Number
         }
        
 

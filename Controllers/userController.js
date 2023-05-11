@@ -648,7 +648,8 @@ const SortPrice = async (req, res) => {
             const data = await Product.find().sort({ price: id }).limit(limit)
             const total = await Product.find().sort({ price: id })
             const size = Math.ceil(total.length / limit)
-            res.render('women', { data, nextpage: true, tagId: 'page-1-link', categories, category, search, size, sort: req.query.id })
+            console.log('hello');
+            res.render('women', { data, nextpage: true, tagId: 'page-1-link', categories, category, search, size, sort:id })
         }
 
     } catch (error) {

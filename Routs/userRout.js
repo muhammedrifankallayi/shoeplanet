@@ -119,6 +119,10 @@ user_route.get("/sortprice",auth.islogin,userController.SortPrice)
 
 user_route.get("/wallet-history",auth.islogin,userController.Listwallethistory)
 
+user_route.post("/showsize",CartController.Shoesize)
+
+
+
 // user_route.get('*',(req,res)=>{
 //     res.redirect('/index')
 // })

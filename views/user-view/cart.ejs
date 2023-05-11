@@ -27,14 +27,15 @@
 							<div class="one-forth text-left px-4">
 								<span>Product Details</span>
 							</div>
+							
 							<div class="one-eight text-center ml-3">
 								<span>Quantity</span>
 							</div>
 							<div class="one-eight text-center ml-5 ">
 								<span>Price</span>
 							</div>
-							<div class="one-eight text-center">
-								<span>Total</span>
+							<div class="one-eight text-center ml-3">
+								<span>Size</span>
 							</div>
 							<div class="one-eight text-center px-4">
 								<span>Remove</span>
@@ -50,7 +51,7 @@
 									<h3  ><%=products[i].productId.name%></h3>
 								</div>
 							</div>
-
+						
 							<div class="input-group mt-4" style="width: 200px;" >
 								<span class="input-group-btn">
 								   <button type="button" class="quantity-left-minus btn" onclick="changecount('<%=products[i]._id%>',-1,'<%=products[i].count%>')" data-type="minus" data-field="">
@@ -74,7 +75,7 @@
 
 							<div class="one-eight text-center">
 								<div class="display-tc">
-									<span class="price"><%=products[i].productId.price*products[i].count%></span>
+									<span class="price"><%=products[i].shoeSize%></span>
 								</div>
 							</div>
 							<div class="one-eight text-center">
@@ -174,7 +175,7 @@
 		</div>
 
 
-		<style>.activ {color: blue;	}</style>
+		<style>.activ {color: blue; text-decoration: underline;	}</style>
 		<script>const myLink = document.getElementById("link6");myLink.classList.add("activ");</script>
 <!-- Ajax code.. -->
 

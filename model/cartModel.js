@@ -27,6 +27,9 @@ const cartSchema=new mongoose.Schema({
         wallet:{
             type:Number,
             default:0
+        },
+        shoeSize:{
+            type:Number
         }
     }]
 })

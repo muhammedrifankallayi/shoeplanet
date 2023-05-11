@@ -20,10 +20,15 @@ var TOTAL
 
     const addToCart=async(req,res)=>{
         try {
+
+
+
             const productid=req.body.product_id
             const productData=await Products.findOne({_id:productid})
             const userData=await Users.findOne({_id:req.session.user_id})
+            
 
+const  shoesize=parseInt(req.session.Shoesize) 
 if(productData.stock==0){
     res.json({stock:true})
 }else{
@@ -36,7 +41,8 @@ if(productData.stock==0){
                 const cartData=await Cart.findOne({userId:userid})
                 if(cartData){
                     const productExist= cartData.products.findIndex((product)=>product.productId==productid)
-                    if(productExist != -1){
+                    
+                    if(productExist != -1 && cartData.products[productExist].shoeSize==shoesize){
                         await Cart.updateOne({userId:userid,"products.productId":productid},{$inc:{"products.$.count":1}})
                     
                         res.json({success:true})
@@ -45,19 +51,26 @@ if(productData.stock==0){
                        
                         
                     }else{
-                        await Cart.findOneAndUpdate({userId:req.session.user_id},{$push:{products:{productId:productid,productPrice:productData.price}}})
-                     
-                        res.json({success:true})
+                        if(req.session.Shoesize){
+                        await Cart.findOneAndUpdate({userId:req.session.user_id},{$push:{products:{productId:productid,productPrice:productData.price,shoeSize:shoesize}}})
+                        req.session.Shoesize=''
+                        res.json({success:true})    
+                    }else{
+                       res.json({size:true})
+                        }
+                      
                       
                        
                   
                     }
                 }else{
+                    if(req.session.Shoesize){
                   const cart= new Cart({
                         userId:userData._id,  //removed username
                         products:[{
                             productId:productid,
                             productPrice:productData.price,
+                            shoeSize:shoesize
                            
                         }]
                     })
@@ -65,20 +78,21 @@ if(productData.stock==0){
                     const cartDatas=await cart.save()
                     if(cartDatas){
                          res.json({success:true})
-                       
-                            // res.redirect('/women')
-                      
-                            
                         
                        
                     }else{
-                        res.redirect('/women')
+                        res.json({false:true})
                     }
+                    req.session.Shoesize=''
+                }else{
+                    res.json({size:true})
+                }
                 }
             }else{
-                res.redirect('/login')
+                res.json({false:true})
             }
         }
+   
         } catch (error){
             console.log(error.message);
            
@@ -599,6 +613,20 @@ if(new Date() <=formattedDate){
 
 }
 
+// receiving shoes size 
+
+const Shoesize = async(req,res)=>{
+    try {
+        const size = req.body.size
+        console.log(size);
+        req.session.Shoesize=size
+        res.json({success:size})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 
 
 
@@ -620,5 +648,6 @@ if(new Date() <=formattedDate){
       RemoveOrder,
       verifyOnlinePayment,
       UpdateAddress,
-      CancelOrder
+      CancelOrder,
+      Shoesize
     }
