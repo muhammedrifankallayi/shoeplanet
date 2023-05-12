@@ -21,7 +21,7 @@
 		<div class="colorlib-about">
 			<div class="container">
 				<%if (orderData[0].status=='Cancelled'){ %>
-					<h1 style="color: red; text-align: center;">ORDER CANCELLED!</h1>
+					<h1 id="cancelDiv" style="color: red; text-align: center;">ORDER CANCELLED!</h1>
 					<%}else if(orderData[0].status=='Delivered'){ %>
 						<h2 style="color: green; text-align: center;" >Order successfully  delivered </h2>
 						<%}else if(orderData[0].status=='Return'){%>
@@ -224,27 +224,47 @@ function remove(id,index){
    })
 }
 
-function cancel(id,status){
-	
-$.ajax({
-    
-	url:'/cancel-order',
-	method:'post',
-	data:{
-		id,
-		status	
-	},
-	success:(response)=>{
-	  if(response.success){
-		  location.reload()
-	  }else{
-		  location.href='/myorders'
-	  }
-		  
-	   }
-
- })
+function cancel(id, status) {
+  Swal.fire({
+    title: 'Enter reason for cancelling',
+    input: 'textarea',
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'Please enter a reason for cancelling'
+      }
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const cancelReason = result.value;
+      const data = {
+        id: id,
+        status: status,
+        cancelReason: cancelReason
+      };
+      $.ajax({
+        url: '/cancel-order',
+        method: 'POST',
+        data: data,
+        success: (response) => {
+          if (response.success) {
+            document.getElementById('cancelDiv').innerText = 'Order Cancelled';
+          } else {
+            location.href = '/myorders';
+          }
+        },
+        error: (xhr, status, error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!'
+          });
+        }
+      });
+    }
+  });
 }
+
 
 
 

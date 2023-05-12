@@ -46,11 +46,12 @@
                         <input type="hidden" name="id" value="" >
                     </div>
                     
-                    
+                    <input type="hidden" name="userId" value="<%=data._id%>">
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
+                    <p style="color: red;" ><%=msg%></p>
                    <input  type="submit" class="btn btn-primary" value="UPDATE" >
                 </form>
             </div>

@@ -7,7 +7,17 @@
         <div class="table-responsive">
             <table class="table">
                 <form action="/admin/salesfilter" method="post" >
-                    <input id="start-date" type="date" name="start"  > <input id="end-date" type="date" name="end" ><button>filter</button>
+                  <form>
+                    <div class="date-range">
+                      <label for="start-date">Start Date:</label>
+                      <input id="start-date" type="date" name="start">
+                      <label for="end-date">End Date:</label>
+                      <input id="end-date" type="date" name="end">
+                      <button type="submit">Filter</button>
+                    </div>
+                  </form>
+                  
+                  
                 </form>
                 <p id="date-error" ></p>
                 <thead>
@@ -26,7 +36,7 @@
                 </thead>
                 <tbody>
 
-                    <% for(let i=0;i<order.length;i++){ %>
+                    <% for(let i=0;i<order.length;i++){ %> 
                     <tr>
                         
                         <th scope="row"><%=i+1%></th>
@@ -90,7 +100,46 @@ filterButton.addEventListener('click', () => {
 
 </script>
 
+<style>
+  form {
+  display: flex;
+  justify-content: center;
+}
 
+.date-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="date"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+</style>
 
 
 

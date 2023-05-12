@@ -155,9 +155,9 @@ if(productData.stock==0){
             const userid=req.session.user_id
             
             
-            var num=req.body.q
+            
              
-            if(num>1){
+           
                
               const cartData= await Cart.updateOne({userId:userid,"products._id":req.body.id},{$inc:{"products.$.count":req.body.count}})
 
@@ -165,12 +165,16 @@ if(productData.stock==0){
              
               // Access the count field of the updated product
               const updatedCount = updatedCartData.products.find(p => p._id == req.body.id).count;
-              
+              if(updatedCount<=0){
+                await Cart.findOneAndDelete({userId: userid})
+                res.json({reload:true})
+              }else{
            
               if(cartData){
                 res.json({count:updatedCount})
               }
             }
+        
         } catch (error) {
             console.log(error.message)
         }  
@@ -558,7 +562,12 @@ const CancelOrder = async(req,res)=>{
 const order = await Order.findOne({_id:id})
 
 // Create a new Date object for the delivery date (replace "deliveryDate" with the actual field name in your data)
-const deliveryDate = order.delivery_date
+
+
+
+
+       if (status=='Return'){
+        const deliveryDate = order.delivery_date
 
 // Add 14 days to the delivery date
 const deliveryDatePlus14Days = new Date(deliveryDate.getTime());
@@ -569,10 +578,6 @@ const formattedDate = deliveryDatePlus14Days
 
 console.log(formattedDate); // Outputs the delivery date plus 14 days in the format "YYYY-MM-DD" (e.g. "2023-05-15")
 
-
-
-
-       if (status=='Return'){
 if(new Date() <=formattedDate){
       await Order.findByIdAndUpdate({_id:id},{$set:{status:status}})
 }else{
@@ -602,7 +607,7 @@ if(new Date() <=formattedDate){
            })
            await WH.save()
         }
-      
+        res.json({success:true})
        }
        res.json({success:true})
     }

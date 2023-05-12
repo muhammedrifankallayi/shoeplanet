@@ -1,5 +1,13 @@
 <%- include('../layout/header.ejs')%>
-		
+<div class="breadcrumbs">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="bread"><span><a href="index">Back</a></span> / <span>Cart</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 		<div class="colorlib-product">
 			<div class="container">
@@ -59,7 +67,7 @@
 								   </button>
 								   </span>
 								   
-								   <input style="width: 50px;" type="number" id="<%=products[i]._id%>" name="count" class="form-control input-number" value="<%=products[i].count%>" min="1" max="100">
+								   <input style="width: 50px;text-align: center; " type="number" id="<%=products[i]._id%>" name="count" class="form-control input-number" value="<%=products[i].count%>" min="1" max="100" readonly >
 
 								<span class="input-group-btn ml-1">
 								   <button type="button" class="quantity-right-plus btn" onclick="changecount('<%=products[i]._id%>',1,'<%=products[i].count+1%>')" data-type="plus" data-field="">
@@ -193,7 +201,12 @@
 				  q:q
 				},
 				success:(response)=>{
-				  document.getElementById(id).value=response.count
+					if(response.count){
+						document.getElementById(id).value=response.count
+					}else{
+						location.reload()
+					}
+				 
 				}
 			  })
 			}

@@ -20,7 +20,7 @@ dotenv.config()
 
 let temp
 let cartsize
-const limit = 5;
+const limit = 9;
 
 
 
@@ -426,8 +426,7 @@ const LoadProfile = async (req, res) => {
     try {
         const userData = await Users.findById({ _id: req.session.user_id })
         const address = await Address.findOne({user_id:userData._id})
-        console.log(address);
-        console.log(address+"ok");
+      
         const coupon = await Coupon.find({status:true}).limit(2)
         res.render('profile', { user: userData,address,coupon })
     } catch (error) {
@@ -438,7 +437,7 @@ const LoadEditprofile = async(req,res)=>{
     try {
 const data = await Users.findOne({_id:req.session.user_id})
 
-        res.render("editprofile",{data})
+        res.render("editprofile",{data,msg:''})
     } catch (error) {
         console.log(error.message);
     }
@@ -446,13 +445,57 @@ const data = await Users.findOne({_id:req.session.user_id})
 
 const Updateprofile = async(req,res)=>{
     try {
-        await Users.updateOne({_id:req.session.user_id},
-            {$set:{username:req.body.name,
-                mobile:req.body.mobile,
-                email:req.body.email,
-                image:req.file.filename
-        }})
-        res.redirect("/profile")
+        
+      
+
+        // Check if the email exists for any user
+        const user = await Users.findOne({email:req.body.email});
+        const username = await Users.findOne({username:req.body.name});
+       
+    const data = await Users.findOne({_id:req.session.user_id})
+        if (user && user._id != req.body.userId) {
+          // The email already exists for another user
+          
+          res.render("editprofile",{msg: 'Email already exists',data})
+        } else {
+
+if(username && username._id != req.body.userId){
+    res.render("editprofile",{msg: 'username is already exists!',data})
+}else{
+
+
+    if(req.file){
+        await Users.updateOne({_id: req.session.user_id}, {
+            $set: {
+              username: req.body.name,
+              mobile: req.body.mobile,
+              email: req.body.email,
+              image: req.file.filename
+            }
+          });
+          res.redirect('/profile');
+      }else{
+        await Users.updateOne({_id: req.session.user_id}, {
+            $set: {
+              username: req.body.name,
+              mobile: req.body.mobile,
+              email: req.body.email,
+             
+            }
+          });
+          res.redirect('/profile');
+      }
+    
+}
+
+
+         
+         
+         
+        }
+        
+
+       
     } catch (error) {
         console.log(error.message);
     }

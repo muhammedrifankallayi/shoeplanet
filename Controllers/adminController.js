@@ -219,17 +219,11 @@ if(isPass){
 const LoadWidget = async(req,res)=>{
     try {
 
-const orderData = await Order.find()
+const orderData = await Order.find().sort({date:-1})
 
-const options = {
-    delivered:"delivered",
-    pending:'pending',
-    cancel:'cancel',
-    shipped:'shipped',
-    placed:'placed'
-}
 
-        res.render('widget',{data:orderData,options})
+
+        res.render('widget',{data:orderData})
     } catch (error) {
         console.log(error.message);
     }
@@ -377,7 +371,7 @@ const InsertProduct = async(req,res)=>{
           img[i]= req.files[i].filename
           
 await sharp('./public/admin/img2/'+req.files[i].filename)
-        .resize(600,600)
+        .resize(850,850)
         .toFile('./public/admin/img/'+req.files[i].filename);
         const data= await cloudinary.uploader.upload('./public/admin/img/'+req.files[i].filename)
         cloudcdn.push(data.secure_url)
@@ -432,7 +426,7 @@ const AddEditProduct = async(req,res)=>{
         img[i]= req.files[i].filename
         cloudcdn=[]
 await sharp('./public/admin/img2/'+req.files[i].filename)
-      .resize(600,600)
+      .resize(850,850)
       .toFile('./public/admin/img/'+req.files[i].filename);
       const data= await cloudinary.uploader.upload('./public/admin/img/'+req.files[i].filename)
       cloudcdn.push(data.secure_url)
@@ -513,7 +507,7 @@ console.log(data);
 var orderdetails
 const SalesReport = async(req,res)=>{
     try {
-         orderdetails = await Order.find().populate('products.productId')
+         orderdetails = await Order.find().populate('products.productId').sort({date:-1})
         
         
          const orders = orderdetails.map(order => ({
@@ -523,9 +517,10 @@ const SalesReport = async(req,res)=>{
             }))
          }));
          
-         console.log(orders);
+       
         res.render('salesreport',{order:orderdetails,name:orders})
     } catch (error) {
+        res.render("404",{msg:error.message})
         console.log(error.message);
     }
 }
@@ -650,7 +645,10 @@ const SalesFilter = async(req,res)=>{
               $gte: datestart,
               $lte: dateend
             }
-          })
+          }).populate('products.productId')
+
+        
+
         res.render('salesreport',{order:orderdetails})
         
     } catch (error) {
@@ -659,7 +657,7 @@ const SalesFilter = async(req,res)=>{
 }
 const OrderDetails = async(req,res)=>{
     try {
-        orderdetails = await Order.find().populate('products.productId')
+        orderdetails = await Order.find().populate('products.productId').sort({date:-1})
         
         
          const orders = orderdetails.map(order => ({
