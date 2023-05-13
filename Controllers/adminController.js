@@ -518,7 +518,7 @@ const SalesReport = async(req,res)=>{
          }));
          
        
-        res.render('salesreport',{order:orderdetails,name:orders})
+        res.render('salesreport',{order:orderdetails,name:orders,dstart:'',dend:''})
     } catch (error) {
         res.render("404",{msg:error.message})
         console.log(error.message);
@@ -649,7 +649,7 @@ const SalesFilter = async(req,res)=>{
 
         
 
-        res.render('salesreport',{order:orderdetails})
+        res.render('salesreport',{order:orderdetails,dstart:datestart,dend:dateend})
         
     } catch (error) {
         console.log(error.message);

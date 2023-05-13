@@ -68,7 +68,8 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="dstart" value="<%=dstart%>" >
+<input type="hidden" id="dend" value="<%=dend%>" >
 
 
 <script>document.getElementById('link7').classList.add("active") </script>
@@ -140,7 +141,18 @@ button[type="submit"]:hover {
 }
 
 </style>
+<script>
+  
+  const dstart  = document.getElementById("dstart").value
+  const  dend  = document.getElementById("dend").value
+  document.getElementById("start-date").value=dstart
+  document.getElementById("end-date").value=dend
+ 
 
+
+
+
+</script>
 
 
 

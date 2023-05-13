@@ -556,6 +556,8 @@ console.log(formattedDate); // Outputs "2023-05-22" (assuming today is May 8, 20
 const CancelOrder = async(req,res)=>{
 
     try {
+
+        console.log(req.body.reason);
        const id = req.body.id
        const status = req.body.status 
      
@@ -588,6 +590,7 @@ if(new Date() <=formattedDate){
        const userorder = await Order.findOne({_id:id})
        console.log('hai');
        if(userorder.status =='Cancelled'){
+        await Order.findByIdAndUpdate({_id:id},{$set:{CancelReason:req.body.reason}})
         console.log('hai');
         if(userorder.paymentMethod !="COD"){
             const wallet = await Users.findOne({_id:req.session.user_id})
