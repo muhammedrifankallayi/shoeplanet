@@ -8,8 +8,8 @@ const fs = require('fs')
 const path = require('path')
 const Order = require('../model/orderModel')
 const sharp = require('sharp')
-const PDFCreator = require("pdf-creator-node");
-const ejs = require('ejs')
+// const PDFCreator = require("pdf-creator-node");
+// const ejs = require('ejs')
 // const pdf = require('html-pdf')
 const cloudinary = require('cloudinary').v2;
 
@@ -546,45 +546,45 @@ const SalesReport = async(req,res)=>{
 
 //   pdf downloading
 
-const download = async (req, res) => {
-    try {
-      const data = {
-        report: orderdetails,
-      };
+// const download = async (req, res) => {
+//     try {
+//       const data = {
+//         report: orderdetails,
+//       };
   
-      const filepath = path.resolve(__dirname, "../views/admin-view/salesreportpdf.ejs");
-      const htmlString = fs.readFileSync(filepath).toString();
+//       const filepath = path.resolve(__dirname, "../views/admin-view/salesreportpdf.ejs");
+//       const htmlString = fs.readFileSync(filepath).toString();
   
-      const options = {
-        format: "A3",
-      };
+//       const options = {
+//         format: "A3",
+//       };
   
-      const ejsData = ejs.render(htmlString, data);
+//       const ejsData = ejs.render(htmlString, data);
   
-      const document = {
-        html: ejsData,
-        data: {},
-        path: "salesReport.pdf",
-        type: "",
-      };
+//       const document = {
+//         html: ejsData,
+//         data: {},
+//         path: "salesReport.pdf",
+//         type: "",
+//       };
   
-      const pdf = await PDFCreator.create(document, options);
-      const filePath = path.resolve(__dirname, "../salesReport.pdf");
+//       const pdf = await PDFCreator.create(document, options);
+//       const filePath = path.resolve(__dirname, "../salesReport.pdf");
   
-      fs.writeFile(filePath, pdf, (err) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).send("Could not generate PDF");
-        }
+//       fs.writeFile(filePath, pdf, (err) => {
+//         if (err) {
+//           console.log(err);
+//           return res.status(500).send("Could not generate PDF");
+//         }
   
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", 'attachment;filename="salesReport.pdf"');
-        res.sendFile(filePath);
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+//         res.setHeader("Content-Type", "application/pdf");
+//         res.setHeader("Content-Disposition", 'attachment;filename="salesReport.pdf"');
+//         res.sendFile(filePath);
+//       });
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
 
 
 // coupen controlling ...
@@ -812,7 +812,7 @@ module.exports =  {
     OrderStatus,
     DltImg,
     SalesReport,
-    download,
+    // download,
     LoadCoupen,
     LoadAddcoupen,
     Addcoupen,
