@@ -30,7 +30,7 @@
 							<div><span>ORDER-<%=i+1%></span><% if(orderData[i].status=="Cancelled"){ %>
 								<span style="color: red; font-weight: bolder; " ><%=orderData[i].status%></span>
 							<% }else if(orderData[i].status=="pending"){ %>
-								<span style="color: yellow; font-weight: bolder;" ><%=orderData[i].status%></span>
+								<span style="color: rgb(255, 255, 0); font-weight: bolder;" ><%=orderData[i].status%></span>
 							<%}else if(orderData[i].status=="Return Rejected"){%>
 								<span style="color: orangered; font-weight: bolder;" ><%=orderData[i].status%></span>
 							<%}else{%>

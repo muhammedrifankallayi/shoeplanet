@@ -12,7 +12,7 @@ const sharp = require('sharp')
 // const pdf = require('html-pdf')
 const cloudinary = require('cloudinary').v2;
 
-
+const limit = 5
 //this is the timing
 
 // Configuration 
@@ -148,9 +148,7 @@ let salescount = []
 for (i = 0; i < sales.length; i++) {
     salescount.push(sales[i].count)
 }
-console.log(userCountByMonth);
-console.log(salesByYear);
-console.log(yearChartuser);
+
 
 
         
@@ -219,11 +217,31 @@ if(isPass){
 const LoadWidget = async(req,res)=>{
     try {
 
-const orderData = await Order.find().sort({date:-1})
+const sdate = req.query.sdate
+const edate = req.query.edate
+const page = parseInt(req.query.page)
+const stx = (page-1)*limit
+const span_id = req.query.spanid || 'spanid1'
+let orderData
+let total
+let size
+
+if(sdate){
+     orderData = await Order.find({date:{$gte:sdate,$lte:edate}}).sort({date:-1}).skip(stx).limit(limit)
+
+     total =  ( await Order.find({date:{$gte:sdate,$lte:edate}})).length
+     size = Math.ceil(total/limit) 
+}else{
+
+ orderData = await Order.find().sort({date:-1}).skip(stx).limit(limit)
+
+total =  (await Order.find()).length
+ size = Math.ceil(total/limit)
+}
 
 
 
-        res.render('widget',{data:orderData})
+        res.render('widget',{data:orderData,span_id,sdate,edate,size,page})
     } catch (error) {
         console.log(error.message);
     }
@@ -657,8 +675,10 @@ const SalesFilter = async(req,res)=>{
 }
 const OrderDetails = async(req,res)=>{
     try {
-        orderdetails = await Order.find().populate('products.productId').sort({date:-1})
-        
+       
+        orderdetails = await Order.find().populate('products.productId').sort({date:-1}).limit(limit)
+        const total =  await Order.find()
+        const size = Math.ceil(total.length/limit)
         
          const orders = orderdetails.map(order => ({
             _id: order._id,
@@ -667,7 +687,7 @@ const OrderDetails = async(req,res)=>{
             }))
          }));
          
-        res.render("orderdetails",{order:orderdetails,name:orders})
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id:'spanid1',size,sdate:'',edate:'',page:1})
     } catch (error) {
         console.log(error.message);
     }
@@ -680,6 +700,82 @@ const vieworder = async(req,res)=>{
         console.log(orderData.products);
        
         res.render('vieworder',{orderData})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// Orderpagination of Order
+
+const Orderpagination =async(req,res)=>{
+    try {
+        const limit = 5
+       
+        const page = req.query.page
+        const span_id = req.query.spanid
+        const sdate = req.query.sdate
+        const edate=  req.query.edate
+        const stx = (page-1)*limit
+
+if(sdate){
+    const order = (await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1})).length
+         const size = Math.ceil(order/limit)
+        const orderdetails = await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1}).skip(stx).limit(limit)
+        const orders = orderdetails.map(order => ({_id: order._id,products: order.products.map(product => ({name: product.productId.name })) }));
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id,size,sdate,edate,page})
+}else{
+    const order = (await Order.find().populate('products.productId').sort({date:-1})).length
+         const size = Math.ceil(order/limit)
+        const orderdetails = await Order.find().populate('products.productId').sort({date:-1}).skip(stx).limit(limit)
+        const orders = orderdetails.map(order => ({
+            _id: order._id,products: order.products.map(product => ({name: product.productId.name }))}));
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id,size,sdate,edate,page})
+ 
+}
+
+
+        
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const filterdetails = async(req,res)=>{
+    try {
+        const sdate = req.body.start
+        const edate=  req.body.end
+
+        orderdetails = await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1}).limit(limit)
+        const total =  await Order.find({date:{$gte:sdate,$lte:edate}})
+        const size = Math.ceil(total.length/limit)
+        
+         const orders = orderdetails.map(order => ({
+            _id: order._id,
+            products: order.products.map(product => ({
+                name: product.productId.name 
+            }))    }));
+         
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id:'',size,sdate,edate,page:1})
+    } catch (error) {
+        console.log(error.message);
+        res.render('404',{msg:error.message})
+    }
+}
+
+const filterOrderHistory = async(req,res)=>{
+    try {
+        const sdate = req.body.start
+        const edate = req.body.end
+        const orderData = await Order.find({date:{$gte:sdate,$lte:edate}}).sort({date:-1}).limit(limit)
+
+        const total = await (await Order.find({date:{$gte:sdate,$lte:edate}})).length
+const size = Math.ceil(total/limit)
+        res.render('widget',{data:orderData,span_id:'spanid1',sdate,edate,size,page:1})
+
+
+
     } catch (error) {
         console.log(error.message);
     }
@@ -720,7 +816,10 @@ module.exports =  {
     LoadEditCoupon,
     SalesFilter,
     OrderDetails,
-    vieworder
+    vieworder,
+    Orderpagination,
+    filterdetails,
+    filterOrderHistory
 
    
 }
