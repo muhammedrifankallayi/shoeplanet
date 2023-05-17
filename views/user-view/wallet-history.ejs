@@ -16,7 +16,11 @@
             <tr>
                 <td><%= data[i].date.toISOString().substring(0,10) %></td>
                 <td><%= data[i]._id %></td>
-                <td><%= data[i].withdraw %></td>
+                <%if(data[i].is_add==true){  %>
+                <td style="color: green; font-weight: bolder;" >+<%= data[i].withdraw %></td>
+                <%}else{%>
+                    <td style="color: red;font-weight: bolder; " >-<%= data[i].withdraw %></td>
+                    <%}%>
                 <td><%= data[i].balance %></td>
             </tr>
             <%}%>

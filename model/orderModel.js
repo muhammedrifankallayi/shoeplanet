@@ -66,7 +66,8 @@ delivery_date:{
     
 },
 CancelReason:{
-    type:String
+    type:String,
+    default:null
 }
 }
 )

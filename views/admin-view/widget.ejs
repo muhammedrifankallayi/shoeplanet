@@ -20,13 +20,14 @@
                             <thead>
                                 <tr>
                                     <th scope="col">no</th>
-                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Customer</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">DeliveryAdress</th>
                                     
                                     <th scope="col">Payment</th>
                                     <th scope="col">status</th>
                                     <th scope="col">return.Req</th>
+                                    <th>Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,9 +56,15 @@
                                         <%}else{%>
                                   <td> Not yet</td>
                                             <%}%>
+                                            <% if(data[i].CancelReason!=null){ %>
+                                                <td><button class="btn btn-primary" onclick="reason('<%=data[i].CancelReason%>')" >View</button></td>
+                                                <%}else{%>
+                                                    <p style="text-align: center;" >-</p>
+                                                    <%}%>
                                 </tr>
-                                <%}%>
                               
+                                <%}%>
+                               
                             </tbody>
                         </table>
                     </div>
@@ -76,7 +83,7 @@
             </div>
 
             <input type="hidden" id="dstart" value="<%=sdate%>" >
-<input type="hidden" id="dend" value="<%=edate%>" >
+<input  type="hidden" id="dend" value="<%=edate%>" >
 
 
 
@@ -115,6 +122,25 @@
             }
           });
           </script>
+
+
+<script>
+    function reason(data){
+ 
+ Swal.fire({
+            title:'Reason ',
+            text:data,
+            icon:"warning",
+            confirmButtonColor:"#3085d6",
+            CancelButtonColor:'#d33',
+            confirmButtonText:'ok'
+        })
+
+    }
+</script>
+
+
+
             <script>
                
 function status(orderId,Id){
@@ -222,5 +248,8 @@ button[type="submit"]:hover {
 
 </style>
 <script>document.getElementById(document.getElementById('spanidinput').value).classList.add("actives")  </script>
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="sweetalert2.all.min.js"></script>
+		<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
             <%-include('../layout/admin-footer.ejs')%> 
