@@ -56,10 +56,12 @@
                                         <%}else{%>
                                   <td> Not yet</td>
                                             <%}%>
+                                           
+
                                             <% if(data[i].CancelReason!=null){ %>
                                                 <td><button class="btn btn-primary" onclick="reason('<%=data[i].CancelReason%>')" >View</button></td>
                                                 <%}else{%>
-                                                    <p style="text-align: center;" >-</p>
+                                                    <p style="text-align: center;" ></p>
                                                     <%}%>
                                 </tr>
                               
@@ -247,6 +249,7 @@ button[type="submit"]:hover {
 }
 
 </style>
+
 <script>document.getElementById(document.getElementById('spanidinput').value).classList.add("actives")  </script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="sweetalert2.all.min.js"></script>
