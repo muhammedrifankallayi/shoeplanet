@@ -58,7 +58,7 @@
                                             <%}%>
                                            
 
-                                            <% if(data[i].CancelReason!=null){ %>
+                                            <% if(data[i].CancelReason=='Cancelled' || 'Return'){ %>
                                                 <td><button class="btn btn-primary" onclick="reason('<%=data[i].CancelReason%>')" >View</button></td>
                                                 <%}else{%>
                                                     <p style="text-align: center;" ></p>
