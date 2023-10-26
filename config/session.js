@@ -1,8 +1,8 @@
 const dotenv = require('dotenv')
 
 
-const SessionSecret=process.env.SessionSecret;
-const adminsecret = process.env.adminsecret;
+const SessionSecret="MRKRIFAN";
+const adminsecret = "adminbaava";
 
 module.exports={
     SessionSecret,
