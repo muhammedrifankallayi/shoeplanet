@@ -150,12 +150,15 @@
 						<div class="row">
 							
 							<div class="col-sm-12">
+								<li><a href="/women"><span id="allprod" >All Products</span></a></li>  
 								<div class="side border mb-1">
-									<h3>Catageries</h3>
+									
+									<h3>Catageries  <%if(category){%> <a class="float-right" href="/sortprice?id=<%=sort%>&search=<%=search%>&category="><span style="color: red;" >Remove</span></a><%}%></h3>
 									<ul>
-										<li><a href="/women">All</a></li>  
+										
+									
 										<%for (let i=0 ; i< categories.length ; i++ ) { %>               
-										<li><a  href="/showcategory?id=<%=categories[i].catagory%>"><span id="<%=categories[i].catagory%>" class="" ><%=categories[i].catagory%></span></a></li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+										<li><a  href="/showcategory?id=<%=categories[i].catagory%>&sort=<%=sort%>"><span id="<%=categories[i].catagory%>" class="" ><%=categories[i].catagory%></span></a></li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 										<%}%>
 										<i class="bi bi-person"></i>
 										
@@ -166,7 +169,7 @@
 							<!-- sorting on price  -->
 							<div class="col-sm-12">
 								<div class="side border mb-1">
-									<h3>Sort On price</h3>
+									<h3>Sort On price  <%if(sort){%> <a class="float-right" href="/showcategory?id=<%=category%>&sort="><span style="color: red;" >Remove</span></a><%}%></h3>
 									<ul>
 										<li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
 											<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
@@ -285,7 +288,7 @@
 
 <script>
 		const myLink = document.getElementById("link2"); myLink.classList.add("activ")
-			const catagory = document.getElementById("cataHLT").value
+			const catagory = document.getElementById("cataHLT").value || 'allprod'
 			document.getElementById(catagory).classList.add('activ')
 </script>
 

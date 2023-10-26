@@ -23,7 +23,7 @@ user_route.get('/register',auth.islogout,userController.LoadRegister)
 user_route.post("/register",userController.InsertUser)
 //home page
 user_route.get('/index',auth.islogin,userController.LoadHome)
-user_route.get('/',auth.islogin,userController.Loadshowhome)
+user_route.get('/',auth.islogout,userController.Loadshowhome)
 //more page
 user_route.get('/men',userController.LoadMen)
 // main page of products

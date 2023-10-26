@@ -10,7 +10,6 @@
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "html-pdf": "^3.0.1",
     "htmltopdf": "^0.0.8",
     "mongo": "^0.1.0",
     "mongodb": "^5.2.0",
@@ -18,6 +17,8 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
+    "pdf-creator-node": "^2.3.5",
+    "puppeteer": "^20.2.1",
     "razorpay": "^2.8.6",
     "sharp": "^0.32.0",
     "sweetalert2": "^11.7.3"
@@ -26,5 +27,24 @@
     "eslint": "^8.40.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5"
-  }
+  },
+  "name": "footwear-master",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://muhammedrifankallayi@github.com/muhammedrifankallayi/shoeplanet.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muhammedrifankallayi/shoeplanet/issues"
+  },
+  "homepage": "https://github.com/muhammedrifankallayi/shoeplanet#readme",
+  "description": ""
 }

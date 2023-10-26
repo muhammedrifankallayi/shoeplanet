@@ -8,7 +8,7 @@
             <table class="table">
                 <form action="/admin/salesfilter" method="post" >
                   <form>
-                    <div class="date-range">
+                    <div class="date-range bg-secondary ">
                       <label for="start-date">Start Date:</label>
                       <input id="start-date" type="date" name="start">
                       <label for="end-date">End Date:</label>
@@ -27,7 +27,7 @@
                         <th scope="col">user</th>
                         <th scope="col">totalproducts</th>
                         <th scope="col">Products</th>
-                        <th scope="col">Prize</th>
+                        <th scope="col">Price</th>
                         
                         <th scope="col">Payment-Type</th>
                         <th scope="col">Date</th>
@@ -64,11 +64,12 @@
                 </tbody>
                
             </table>
-            <a href="/admin/download" class="btn btn-primary">Download</a>
+            <a href="/admin/download-pdf" class="btn btn-primary">Download</a>
         </div>
     </div>
 </div>
-
+<input type="hidden" id="dstart" value="<%=dstart%>" >
+<input type="hidden" id="dend" value="<%=dend%>" >
 
 
 <script>document.getElementById('link7').classList.add("active") </script>
@@ -140,7 +141,18 @@ button[type="submit"]:hover {
 }
 
 </style>
+<script>
+  
+  const dstart  = document.getElementById("dstart").value
+  const  dend  = document.getElementById("dend").value
+  document.getElementById("start-date").value=dstart
+  document.getElementById("end-date").value=dend
+ 
 
+
+
+
+</script>
 
 
 

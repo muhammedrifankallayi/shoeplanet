@@ -27,7 +27,16 @@
                         <!-- ..... -->
                        <% for(let i=0;i< orderData.length;i++){ %>
                         <% if(orderData[i].products.length>0){ %>
-                       <div><span>ORDER-<%=i+1%></span> <a class="btn btn-dark float-right mr-4 " href="/orderview?id=<%=orderData[i]._id%>">view</a></div>
+							<div><span>ORDER-<%=i+1%></span><% if(orderData[i].status=="Cancelled"){ %>
+								<span style="color: red; font-weight: bolder; " ><%=orderData[i].status%></span>
+							<% }else if(orderData[i].status=="pending"){ %>
+								<span style="color: rgb(255, 255, 0); font-weight: bolder;" ><%=orderData[i].status%></span>
+							<%}else if(orderData[i].status=="Return Rejected"){%>
+								<span style="color: orangered; font-weight: bolder;" ><%=orderData[i].status%></span>
+							<%}else{%>
+								<span style="color: green; font-weight: bolder;" ><%=orderData[i].status%></span>
+							<%}%>
+						<a class="btn btn-dark float-right mr-4 " href="/orderview?id=<%=orderData[i]._id%>">view</a></div>
                      <%}%>
                       
                         <% for(let j=0;j< orderData[i].products.length;j++){ %>

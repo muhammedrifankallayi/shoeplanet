@@ -30,7 +30,11 @@ admin_route.get("/logout",adminController.Logout)
 admin_route.get('/userdata', auth.isadnlogin, adminController.LoadUserData)
 admin_route.get('/form', auth.isadnlogin, adminController.LoadForm)
 admin_route.get('/chart', auth.isadnlogin, adminController.LoadChart)
+
+// Order history page 
 admin_route.get('/widget', auth.isadnlogin, adminController.LoadWidget)
+admin_route.post('/widget',adminController.filterOrderHistory)
+
 admin_route.get('/block', auth.isadnlogin, adminController.BlockUser)
 admin_route.get('/catagory', auth.isadnlogin, adminController.LoadButton)
 admin_route.get('/addCatagory', auth.isadnlogin, adminController.LoadAddCatogory)
@@ -48,12 +52,13 @@ admin_route.post('/editproduct', auth.isadnlogin, multer.upload.array('image',5)
 admin_route.get('/ordercancel', auth.isadnlogin,adminController.CancelOrder)
 admin_route.post('/orderstatus', auth.isadnlogin,adminController.OrderStatus)
 admin_route.get('/orderdetails',adminController.OrderDetails)
+admin_route.post('/orderdetails',adminController.filterdetails)
 admin_route.get('/view-order',adminController.vieworder)
 
 admin_route.post('/dlt-img', auth.isadnlogin,adminController.DltImg)
 
 admin_route.get('/salesreport', auth.isadnlogin,adminController.SalesReport)
-// admin_route.get('/download', auth.isadnlogin,adminController.download)
+admin_route.get('/download-pdf', auth.isadnlogin,adminController.download)
 admin_route.post("/salesfilter", auth.isadnlogin,adminController.SalesFilter)
 
 admin_route.post("/deletecoupen", auth.isadnlogin,adminController.CoupenDelete)
@@ -64,7 +69,7 @@ admin_route.get('/coupen', auth.isadnlogin,adminController.LoadCoupen)
 admin_route.get('/addcoupen', auth.isadnlogin,adminController.LoadAddcoupen)
 admin_route.post('/addcoupen', auth.isadnlogin,adminController.Addcoupen)
 
-
+admin_route.get('/order-pagination',adminController.Orderpagination)
 
 
 admin_route.get('*', (req, res) => {

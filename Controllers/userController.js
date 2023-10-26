@@ -318,14 +318,27 @@ const Logout = async (req, res) => {
 }
 
 const ShowCatagory = async (req, res) => {
-    try {
+    try { 
+        var total
         const Id = req.query.id
-        const total = await Product.find({ catagory: Id })
-        const size = Math.ceil(total.length / limit)
+        total = await Product.find({ catagory: Id }) 
+       
 
         const categories = await Category.find()
-        const Data = await Product.find({ catagory: Id }).limit(limit)
-        res.render('women', { data: Data, cartsize, tagId: 'page-1-link', nextpage: true, categories, category: Id, size, search: '',sort:'' })
+var Data
+        if(req.query.sort && Id){
+            Data = await Product.find({ catagory: Id }).limit(limit).sort({price:req.query.sort})
+        }else if(Id){
+            Data = await Product.find({ catagory: Id }).limit(limit)
+        }else{
+            Data = await Product.find().limit(limit)
+            total= await Product.find() 
+        }
+      
+
+        const size = Math.ceil(total.length / limit)
+
+        res.render('women', { data: Data, cartsize, tagId: 'page-1-link', nextpage: true, categories, category: Id, size, search: '',sort:req.query.sort })
 
     } catch (error) {
         console.log(error.message);
@@ -673,7 +686,7 @@ const SearchResult = async (req, res) => {
 const SortPrice = async (req, res) => {
     try {
         const search = req.query.search
-        const id = parseInt(req.query.id)
+        const id = req.query.id
         const category = req.query.category
         const categories = await Category.find()
         if (search) {

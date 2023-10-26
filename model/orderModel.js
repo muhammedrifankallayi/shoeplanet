@@ -64,6 +64,10 @@ payment_id:{
 delivery_date:{
     type:Date,
     
+},
+CancelReason:{
+    type:String,
+    default:null
 }
 }
 )

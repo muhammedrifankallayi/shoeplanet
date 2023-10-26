@@ -1,5 +1,13 @@
 <%-include('../layout/admin-header.ejs')%>
-
+<div class="breadcrumbs mt-4">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<p class="bread"><span><a href="/admin/orderdetails">Back</a></span> / <span>View Order</span></p>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="colorlib-about">
     <div class="container mt-3">
       
@@ -18,7 +26,7 @@
                     <p><%=orderData[i].products[j].productId.description%></p>
                     <div class="display-tc">
                         <label for="quantity">count<input type="button" id="quantity"  name="quantity" class="btn btn-sm" value="<%=orderData[i].products[j].count%>" min="1" max="100"></label>
-                        
+                        <label for="quantity">size<input type="button" id="quantity"  name="quantity" class="btn btn-sm" value="<%=orderData[i].products[j].shoeSize%>" min="1" max="100"></label>
                     </div>
                     <p>Price:<%=orderData[i].products[j].productId.price%></p>
                     <p>Address:<%=orderData[i].deliveryDetails%></p>
@@ -38,7 +46,6 @@
                             <th>Mobile</th>
                             <th>Products</th>
                             <th>GrandTotal</th>
-                            
                         </tr>
                     </thead>
                     <tbody>

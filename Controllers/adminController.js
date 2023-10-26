@@ -8,11 +8,12 @@ const fs = require('fs')
 const path = require('path')
 const Order = require('../model/orderModel')
 const sharp = require('sharp')
+// const PDFCreator = require("pdf-creator-node");
 // const ejs = require('ejs')
 // const pdf = require('html-pdf')
 const cloudinary = require('cloudinary').v2;
 
-
+const limit = 5
 //this is the timing
 
 // Configuration 
@@ -148,9 +149,7 @@ let salescount = []
 for (i = 0; i < sales.length; i++) {
     salescount.push(sales[i].count)
 }
-console.log(userCountByMonth);
-console.log(salesByYear);
-console.log(yearChartuser);
+
 
 
         
@@ -219,11 +218,31 @@ if(isPass){
 const LoadWidget = async(req,res)=>{
     try {
 
-const orderData = await Order.find().sort({date:-1})
+const sdate = req.query.sdate
+const edate = req.query.edate
+const page = parseInt(req.query.page)
+const stx = (page-1)*limit
+const span_id = req.query.spanid || 'spanid1'
+let orderData
+let total
+let size
+
+if(sdate){
+     orderData = await Order.find({date:{$gte:sdate,$lte:edate}}).sort({date:-1}).skip(stx).limit(limit)
+
+     total =  ( await Order.find({date:{$gte:sdate,$lte:edate}})).length
+     size = Math.ceil(total/limit) 
+}else{
+
+ orderData = await Order.find().sort({date:-1}).skip(stx).limit(limit)
+
+total =  (await Order.find()).length
+ size = Math.ceil(total/limit)
+}
 
 
 
-        res.render('widget',{data:orderData})
+        res.render('widget',{data:orderData,span_id,sdate,edate,size,page})
     } catch (error) {
         console.log(error.message);
     }
@@ -518,7 +537,7 @@ const SalesReport = async(req,res)=>{
          }));
          
        
-        res.render('salesreport',{order:orderdetails,name:orders})
+        res.render('salesreport',{order:orderdetails,name:orders,dstart:'',dend:''})
     } catch (error) {
         res.render("404",{msg:error.message})
         console.log(error.message);
@@ -526,43 +545,67 @@ const SalesReport = async(req,res)=>{
 }
 
 //   pdf downloading
-
-// const download = async(req,res)=>{
-//     try {
-       
-        
-        
-//         const data={
-//             report:orderdetails
-//         }
-
-//         const filepath =path.resolve(__dirname,'../views/admin-view/salesreportpdf.ejs')
-//         const htmlstring=fs.readFileSync(filepath).toString()
-      
-//        let option={
-//         format:"A3"
-//        }
-//        const ejsData=  ejs.render(htmlstring,data)
-//        pdf.create(ejsData,option).toFile('salesReport.pdf',(err,response)=>{
-//         if(err) console.log(err);
-       
-//       const filepath= path.resolve(__dirname,'../salesReport.pdf')
-//       fs.readFile(filepath,(err,file)=>{
-//         if(err) {
-//             console.log(err);
-//             return res.status(500).send('could not download file')
-//         }
-//         res.setHeader('Content-Type','application/pdf')
-//         res.setHeader('Content-Disposition','attatchment;filename="sales Report.pdf"')
-
-//         res.send(file)
-
-//       })
-//        })
-//     } catch (error) {
-//         console.log(error.messsage);
-//     }
-// }
+const puppeteer = require("puppeteer");
+const download = async (req, res) => {
+    try {
+     const order = orderdetails
+     let htmlTableData = `
+     <style>
+    .table td {
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+     
+     <table class="table">
+     <thead>
+       <tr>
+         <th class="px-4 py-3">NO</th>
+         <th class="px-4 py-3">Costomer Name</th>
+         <th class="px-4 py-3">Total products</th>
+         <th class="px-4 py-3">Products</th>
+         <th class="px-4 py-3">Amount</th>
+         <th class="px-4 py-3">Method</th>
+         <th class="px-4 py-3">Date</th>
+       </tr>
+     </thead>
+     <tbody>`;
+ 
+   for (let i = 0; i < order.length; i++) {
+     htmlTableData += `
+       <tr>
+         <th scope="row">${i + 1}</th>
+         <td class="px-4 py-3" >${order[i].user}</td>
+         <td  class="px-4 py-3" >${order[i].products.length}</td>
+         <td  class="px-4 py-3" >
+           ${order[i].products.map(product => product.productId.name).join("<br>")}
+         </td>
+         <td  class="px-4 py-3" >${order[i].totalAmount}</td>
+         <td  class="px-4 py-3" >${order[i].paymentMethod}</td>
+         <td  class="px-4 py-3" ><a class="btn btn-danger">${order[i].date.toISOString().substring(0, 10)}</a></td>
+       </tr>`;
+   }
+ 
+   htmlTableData += `
+     </tbody>
+   </table>`;
+  
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlTableData);
+    
+        const pdf = await page.pdf();
+    
+        await browser.close();
+    
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", 'attachment;filename="tableReport.pdf"');
+        res.send(pdf);
+      } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Could not generate PDF");
+      }
+  };
 
 
 // coupen controlling ...
@@ -649,7 +692,7 @@ const SalesFilter = async(req,res)=>{
 
         
 
-        res.render('salesreport',{order:orderdetails})
+        res.render('salesreport',{order:orderdetails,dstart:datestart,dend:dateend})
         
     } catch (error) {
         console.log(error.message);
@@ -657,8 +700,10 @@ const SalesFilter = async(req,res)=>{
 }
 const OrderDetails = async(req,res)=>{
     try {
-        orderdetails = await Order.find().populate('products.productId').sort({date:-1})
-        
+       
+        orderdetails = await Order.find().populate('products.productId').sort({date:-1}).limit(limit)
+        const total =  await Order.find()
+        const size = Math.ceil(total.length/limit)
         
          const orders = orderdetails.map(order => ({
             _id: order._id,
@@ -667,7 +712,7 @@ const OrderDetails = async(req,res)=>{
             }))
          }));
          
-        res.render("orderdetails",{order:orderdetails,name:orders})
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id:'spanid1',size,sdate:'',edate:'',page:1})
     } catch (error) {
         console.log(error.message);
     }
@@ -680,6 +725,82 @@ const vieworder = async(req,res)=>{
         console.log(orderData.products);
        
         res.render('vieworder',{orderData})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// Orderpagination of Order
+
+const Orderpagination =async(req,res)=>{
+    try {
+        const limit = 5
+       
+        const page = req.query.page
+        const span_id = req.query.spanid
+        const sdate = req.query.sdate
+        const edate=  req.query.edate
+        const stx = (page-1)*limit
+
+if(sdate){
+    const order = (await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1})).length
+         const size = Math.ceil(order/limit)
+        const orderdetails = await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1}).skip(stx).limit(limit)
+        const orders = orderdetails.map(order => ({_id: order._id,products: order.products.map(product => ({name: product.productId.name })) }));
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id,size,sdate,edate,page})
+}else{
+    const order = (await Order.find().populate('products.productId').sort({date:-1})).length
+         const size = Math.ceil(order/limit)
+        const orderdetails = await Order.find().populate('products.productId').sort({date:-1}).skip(stx).limit(limit)
+        const orders = orderdetails.map(order => ({
+            _id: order._id,products: order.products.map(product => ({name: product.productId.name }))}));
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id,size,sdate,edate,page})
+ 
+}
+
+
+        
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const filterdetails = async(req,res)=>{
+    try {
+        const sdate = req.body.start
+        const edate=  req.body.end
+
+        orderdetails = await Order.find({date:{$gte:sdate,$lte:edate}}).populate('products.productId').sort({date:-1}).limit(limit)
+        const total =  await Order.find({date:{$gte:sdate,$lte:edate}})
+        const size = Math.ceil(total.length/limit)
+        
+         const orders = orderdetails.map(order => ({
+            _id: order._id,
+            products: order.products.map(product => ({
+                name: product.productId.name 
+            }))    }));
+         
+        res.render("orderdetails",{order:orderdetails,name:orders,span_id:'',size,sdate,edate,page:1})
+    } catch (error) {
+        console.log(error.message);
+        res.render('404',{msg:error.message})
+    }
+}
+
+const filterOrderHistory = async(req,res)=>{
+    try {
+        const sdate = req.body.start
+        const edate = req.body.end
+        const orderData = await Order.find({date:{$gte:sdate,$lte:edate}}).sort({date:-1}).limit(limit)
+
+        const total = await (await Order.find({date:{$gte:sdate,$lte:edate}})).length
+const size = Math.ceil(total/limit)
+        res.render('widget',{data:orderData,span_id:'spanid1',sdate,edate,size,page:1})
+
+
+
     } catch (error) {
         console.log(error.message);
     }
@@ -712,7 +833,7 @@ module.exports =  {
     OrderStatus,
     DltImg,
     SalesReport,
-    // download,
+    download,
     LoadCoupen,
     LoadAddcoupen,
     Addcoupen,
@@ -720,7 +841,10 @@ module.exports =  {
     LoadEditCoupon,
     SalesFilter,
     OrderDetails,
-    vieworder
+    vieworder,
+    Orderpagination,
+    filterdetails,
+    filterOrderHistory
 
    
 }

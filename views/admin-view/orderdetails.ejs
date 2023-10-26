@@ -6,8 +6,23 @@
 
 <div class="col-12">
     <div class="bg-secondary rounded h-100 p-4 m-3">
-        <h6 class="mb-4">Catagory Management</h6>
+        <h6 class="mb-4">Order details</h6>
+        <div>
+            <form action="/admin/orderdetails" method="post" >
+                <div class="date-range bg-secondary ">
+                  <label for="start-date">Start Date:</label>
+                  <input id="start-date" type="date" name="start">
+                  <label for="end-date">End Date:</label>
+                  <input id="end-date" type="date" name="end">
+                  <button type="submit">Filter</button>
+                  <% if(sdate){ %>
+                    <a class="btn btn-primary" href="/admin/widget">Remove</a>
+               <%}%>
+                </div>
+              </form>
+        </div>
         <div class="table-responsive">
+           
             <table class="table">
             
                 
@@ -31,7 +46,7 @@
                     <% for(let i=0;i<order.length;i++){ %>
                     <tr>
                         
-                        <th scope="row"><%=i+1%></th>
+                        <th scope="row"><%=i+1+((page-1)*5)%></th>
                         <td><%=order[i].user%></td>
                        
                         <td>
@@ -60,8 +75,111 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="dstart" value="<%=sdate%>" >
+<input type="hidden" id="dend" value="<%=edate%>" >
+<style>
+    #pagespan span {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 2px solid red;
+    margin: 0 5px;
+    border-radius: 5px;
+  }
+  #pagespan span:hover {
+  background-color: red;
+  color: white;
+}
+.actives{
+    background-color: red;
+  color: white;
+}
 
 
+  form {
+  display: flex;
+  justify-content: center;
+}
 
+.date-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="date"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+</style>
+
+<script>
+      const startDate = document.getElementById('start-date');
+const endDate = document.getElementById('end-date');
+const filterButton = document.querySelector('button');
+
+// Disable dates earlier than today
+
+
+// Add event listeners to date inputs
+startDate.addEventListener('change', () => {
+  endDate.setAttribute('min', startDate.value);
+});
+endDate.addEventListener('change', () => {
+  startDate.setAttribute('max', endDate.value);
+});
+
+// Add event listener to filter button
+filterButton.addEventListener('click', () => {
+  // Validate date inputs
+  if (startDate.value > endDate.value) {
+    alert('End date cannot be less than start date');
+    return;
+  }
+});
+</script>
+<script>
+  
+    const dstart  = document.getElementById("dstart").value
+    const  dend  = document.getElementById("dend").value
+    document.getElementById("start-date").value=dstart
+    document.getElementById("end-date").value=dend
+  </script>
+
+    <div class="col-md-12 text-center">
+        <div class="block-27">
+       <ul>
+        <% for(let i =1 ; i<=size;i++){ %>
+           <a id="pagespan" href="/admin/order-pagination?page=<%=i%>&spanid=spanid<%=i%>&sdate=<%=sdate%>&edate=<%=edate%>"><span id="spanid<%=i%>" ><%=i%></span></a>
+         
+        <%}%>
+        <input type="hidden" id="spanidinput" value="<%=span_id%>" >
+       </ul>
+    </div>
+    </div>
+
+<script>document.getElementById(document.getElementById('spanidinput').value).classList.add("actives")  </script>
 <script>document.getElementById('link10').classList.add("active") </script>
 <%-include('../layout/admin-footer.ejs')%>

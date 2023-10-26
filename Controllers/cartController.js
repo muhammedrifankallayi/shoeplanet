@@ -418,14 +418,31 @@ var Nwallet
                 console.log('hai2')
                 amount = amount-userData.wallet
                Nwallet = 0
+               await Users.updateOne({_id:req.session.user_id},{$set:{wallet:Nwallet}})
                }else if(req.body.wallet && amount<userData.wallet){
                 console.log('hai3');
                 
                 console.log(amount);
                 Nwallet = userData.wallet-amount
-                amount = 0
                
+                amount = 0
+                await Users.updateOne({_id:req.session.user_id},{$set:{wallet:Nwallet}})
                }
+if(req.body.wallet){
+    const WH = new WalletHistory({
+        userId:req.session.user_id,
+        balance:Nwallet,
+        withdraw:req.body.amount,  //withdraw or add
+        date:new Date(),
+        is_add:false
+       })
+       await WH.save()
+}
+             
+            
+
+
+
                if(amount>0){
                 const totalamount=orderData.totalAmount
                 var options={
@@ -556,6 +573,8 @@ console.log(formattedDate); // Outputs "2023-05-22" (assuming today is May 8, 20
 const CancelOrder = async(req,res)=>{
 
     try {
+
+        console.log(req.body.reason);
        const id = req.body.id
        const status = req.body.status 
      
@@ -588,6 +607,24 @@ if(new Date() <=formattedDate){
        const userorder = await Order.findOne({_id:id})
        console.log('hai');
        if(userorder.status =='Cancelled'){
+        await Order.findByIdAndUpdate({_id:id},{$set:{CancelReason:req.body.reason}})
+        const results = await Order.aggregate([
+            {
+              $match: { user_id: req.session.user_id }
+            },
+            {
+              $unwind: '$products'
+            },
+            {
+              $group: {
+                _id: '$products.productId',
+                count: { $sum: '$products.count' }
+              }
+            }
+          ]);
+          results.forEach(async(id)=>{
+            await Products.findByIdAndUpdate({_id:id._id},{$inc:{stock:id.count}})
+        })
         console.log('hai');
         if(userorder.paymentMethod !="COD"){
             const wallet = await Users.findOne({_id:req.session.user_id})
