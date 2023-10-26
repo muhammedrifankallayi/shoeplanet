@@ -545,66 +545,15 @@ const SalesReport = async(req,res)=>{
 }
 
 //   pdf downloading
-const puppeteer = require("puppeteer");
+
 const download = async (req, res) => {
-    try {
-     const order = orderdetails
-     let htmlTableData = `
-     <style>
-    .table td {
-      text-align: center;
-      padding: 10px;
-    }
-  </style>
-     
-     <table class="table">
-     <thead>
-       <tr>
-         <th class="px-4 py-3">NO</th>
-         <th class="px-4 py-3">Costomer Name</th>
-         <th class="px-4 py-3">Total products</th>
-         <th class="px-4 py-3">Products</th>
-         <th class="px-4 py-3">Amount</th>
-         <th class="px-4 py-3">Method</th>
-         <th class="px-4 py-3">Date</th>
-       </tr>
-     </thead>
-     <tbody>`;
- 
-   for (let i = 0; i < order.length; i++) {
-     htmlTableData += `
-       <tr>
-         <th scope="row">${i + 1}</th>
-         <td class="px-4 py-3" >${order[i].user}</td>
-         <td  class="px-4 py-3" >${order[i].products.length}</td>
-         <td  class="px-4 py-3" >
-           ${order[i].products.map(product => product.productId.name).join("<br>")}
-         </td>
-         <td  class="px-4 py-3" >${order[i].totalAmount}</td>
-         <td  class="px-4 py-3" >${order[i].paymentMethod}</td>
-         <td  class="px-4 py-3" ><a class="btn btn-danger">${order[i].date.toISOString().substring(0, 10)}</a></td>
-       </tr>`;
-   }
- 
-   htmlTableData += `
-     </tbody>
-   </table>`;
-  
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(htmlTableData);
+   
+  try {
+    res.send("internal server error, sorry")
+  } catch (error) {
     
-        const pdf = await page.pdf();
+  }
     
-        await browser.close();
-    
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", 'attachment;filename="tableReport.pdf"');
-        res.send(pdf);
-      } catch (error) {
-        console.log(error.message);
-        res.status(500).send("Could not generate PDF");
-      }
   };
 
 
